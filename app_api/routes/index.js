@@ -8,9 +8,17 @@ var auth = jwt({
 
 var ctrlProfile = require('../controllers/profile');
 var ctrlAuth = require('../controllers/authentication');
+var ctrlProject = require('../controllers/project');
 
 // profile
 router.get('/profile', auth, ctrlProfile.profileRead);
+router.post('/profileUpdate', auth, ctrlProfile.profileUpdate);
+router.post('/profileDelete', auth, ctrlProfile.profileDelete);
+
+// project
+router.get('/project', ctrlProject.porjectRead);
+router.post('/projectUpdate', auth, ctrlProject.projectUpdate);
+router.post('/projectDelete', auth, ctrlProject.projectDelete);
 
 // authentication
 router.post('/register', ctrlAuth.register);
