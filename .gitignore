@@ -1,0 +1,7 @@
+#files to ignore
+
+#npm
+node_modules/
+
+#IDE rubbish
+.idea/
