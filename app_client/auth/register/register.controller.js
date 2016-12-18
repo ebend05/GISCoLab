@@ -12,6 +12,17 @@
       name : "",
       email : "",
       password : ""
+      
+      /* once Front End Input is acquainted, include this: 
+      userName : "",
+      email : "",
+      firstName : "",
+      lastName : "",
+      registrDate : "",
+      birthday : "",
+      info : "",
+      password : ""
+      */
     };
 
     vm.onSubmit = function () {
