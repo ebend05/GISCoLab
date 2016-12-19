@@ -20,7 +20,7 @@ var projectSchema = new mongoose.Schema({
     collaborators: [{
        type: String,
        required: false
-    }],
+    }]
 });
 
 mongoose.model( 'Project', projectSchema );
