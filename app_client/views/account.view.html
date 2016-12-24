@@ -1,0 +1,47 @@
+<nav class="navbar navbar-custom navbar-static-top"> <!-- navbar -->
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">GISCoLab</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/projects">Projects</a></li>
+                <li><a href="/account">Profil</a></li>
+                <li><a href="/current">Current</a></li>
+            </ul>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <form id="signin" class="navbar-form navbar-right" role="form">
+                    <div class="input-group">
+                        <input id="search" type="search" class="form-control" name="search" value="" placeholder="Search">
+                    </div>
+
+                    <button id="logout" class="btn btn-danger">Logout</button>
+                </form>
+
+            </div>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-xs-3">
+            <img src="../styles/images/Download.jpg"> <!-- Profilbild -->
+    <p>Projekte</p> <!-- Links zu von der Person/von dir abonnierte/kollaborierende/erstellte Projekte -->
+    <p>Kollegen</p> <!-- Links zu deinen "Kollegen"/Freunden -->
+    <p>abonnierte personen</p> <!-- Von dir abonnierte Personen -->
+    </div>
+    <div class="col-xs-8"> <!-- Persönliche Daten  -->
+    <p>Vorname: {{vm.user.firstName}}</p>
+    <p>Nachname: {{vm.user.lastName}}</p>
+    <p>e-mail: {{vm.user.email}}</p>
+    <p>Username: {{vm.user.userName}}</p>
+    <p>...</p>
+</div>
+        <a href="/profile" class="btn btn-link">Profil bearbeiten</a>
+<div class="col-xs-1"> <!-- Einstellungen/Bei Fremdprofilen: Abonnieren-Button -->
+    <img src="../styles/images/Zahnrad.png" style="width: 70%; align: right">
+</div>
+</div>
+</div>

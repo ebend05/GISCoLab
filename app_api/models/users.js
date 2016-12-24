@@ -20,7 +20,7 @@ var userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    registrDate: {
+    /*registrDate: {
         type: Date,
         required: true
     },
@@ -31,7 +31,7 @@ var userSchema = new mongoose.Schema({
     info: {
         type: String,
         required: false
-    },
+    },*/
     hash: String,
     salt: String
 });

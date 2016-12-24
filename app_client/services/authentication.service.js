@@ -1,7 +1,7 @@
 (function () {
 
   angular
-    .module('meanApp')
+    .module('giscolab')
     .service('authentication', authentication);
 
   authentication.$inject = ['$http', '$window'];
@@ -37,8 +37,10 @@
         payload = $window.atob(payload);
         payload = JSON.parse(payload);
         return {
-          email : payload.email,
-          name : payload.name
+            firstName : payload.firstName,
+            lastName : payload.lastName,
+            email : payload.email,
+            userName : payload.userName
         };
       }
     };

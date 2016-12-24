@@ -1,29 +1,39 @@
 (function () {
 
-  angular.module('meanApp', ['ngRoute']);
+  angular.module('giscolab', ['ngRoute']);
 
   function config ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'home/home.view.html',
+        templateUrl: 'views/home.view.html',
         controller: 'homeCtrl',
         controllerAs: 'vm'
       })
       .when('/register', {
-        templateUrl: '/auth/register/register.view.html',
+        templateUrl: 'views/register.view.html',
         controller: 'registerCtrl',
         controllerAs: 'vm'
       })
-      .when('/login', {
-        templateUrl: '/auth/login/login.view.html',
-        controller: 'loginCtrl',
-        controllerAs: 'vm'
-      })
       .when('/profile', {
-        templateUrl: '/profile/profile.view.html',
+        templateUrl: 'views/profile.view.html',
         controller: 'profileCtrl',
         controllerAs: 'vm'
       })
+        .when('/current', {
+          templateUrl: 'views/current.view.html',
+            controller: 'currentCtrl',
+            controllerAs: 'vm'
+        })
+        .when('/projects', {
+          templateUrl: 'views/projects.view.html',
+            controller: 'projectsCtrl',
+            controllerAs: 'vm'
+        })
+        .when('/account', {
+          templateUrl: 'views/account.view.html',
+            controller: 'accountCtrl',
+            controllerAs: 'vm'
+        })
       .otherwise({redirectTo: '/'});
 
     // use the HTML5 History API
@@ -39,7 +49,7 @@
   }
   
   angular
-    .module('meanApp')
+    .module('giscolab')
     .config(['$routeProvider', '$locationProvider', config])
     .run(['$rootScope', '$location', 'authentication', run]);
 

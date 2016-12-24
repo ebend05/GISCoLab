@@ -1,11 +1,31 @@
 (function() {
   
   angular
-    .module('meanApp')
+    .module('giscolab')
     .controller('homeCtrl', homeCtrl);
 
-    function homeCtrl () {
-      console.log('Home controller is running '+ process.env.MY_SECRET);
+    homeCtrl.$inject = ['$location', 'authentication'];
+
+    function homeCtrl ($location, authentication) {
+
+        var vm = this;
+
+        vm.credentials = {
+            email : "",
+            password : ""
+        };
+
+        vm.onSubmit = function () {
+            authentication
+                .login(vm.credentials)
+                .error(function(err){
+                    alert(err);
+                })
+                .then(function(){
+                    $location.path('/account');
+                });
+        };
+
     }
 
 })();

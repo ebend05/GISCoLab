@@ -1,7 +1,7 @@
 (function () {
 
   angular
-    .module('meanApp')
+    .module('giscolab')
     .directive('navigation', navigation);
 
   function navigation () {

@@ -1,7 +1,7 @@
 (function() {
 
   angular
-    .module('meanApp')
+    .module('giscolab')
     .service('meanData', meanData);
 
   meanData.$inject = ['$http', 'authentication'];

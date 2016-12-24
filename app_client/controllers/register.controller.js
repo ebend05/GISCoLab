@@ -1,7 +1,7 @@
 (function () {
 
   angular
-    .module('meanApp')
+    .module('giscolab')
     .controller('registerCtrl', registerCtrl);
 
   registerCtrl.$inject = ['$location', 'authentication'];
@@ -9,9 +9,12 @@
     var vm = this;
 
     vm.credentials = {
-      name : "",
-      email : "",
-      password : ""
+        firstName: "",
+        lastName: "",
+        email: "",
+        userName: "",
+        password: ""
+    };
       
       /* once Front End Input is acquainted, include this: 
       userName : "",
@@ -23,7 +26,6 @@
       info : "",
       password : ""
       */
-    };
 
     vm.onSubmit = function () {
       console.log('Submitting registration');
@@ -33,7 +35,7 @@
           alert(err);
         })
         .then(function(){
-          $location.path('profile');
+          $location.path('/account');
         });
     };
 

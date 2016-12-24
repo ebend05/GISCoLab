@@ -1,24 +1,57 @@
-<navigation></navigation>
+<nav class="navbar navbar-custom navbar-static-top"> <!-- navbar -->
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">GISCoLab</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/projects">Projects</a></li>
+                <li class="active"><a href="/account">Profil</a></li>
+                <li><a href="/current">Current</a></li>
+            </ul>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <form id="signin" class="navbar-form navbar-right" role="form">
+                    <div class="input-group">
+                        <input id="search" type="search" class="form-control" name="search" value="" placeholder="Search">
+                    </div>
+
+                    <button id="logout" class="btn btn-danger">Logout</button>
+                </form>
+
+            </div>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
 
 <div class="container">
-  <div class="row">
-    
-     <div class="col-md-6">
-
-      <h1 class="form-signin-heading">Your profile</h1>
-
-      <form  class="form-horizontal">
+    <form method="post" ng-submit="vm.onSubmit()">
         <div class="form-group">
-          <label class="col-sm-3 control-label">Full name</label>
-          <p class="form-control-static">{{ vm.user.name }}</p>
+            <label  for="firstname">First name </label>
+            <input type="text" id="firstName" class="form-control" ng-model="vm.user.firstName" required />
         </div>
         <div class="form-group">
-          <label class="col-sm-3 control-label">Email</label>
-          <p class="form-control-static">{{ vm.user.email }}</p>
+            <label for="lastname">Last name</label>
+            <input type="text" id="lastName" class="form-control" ng-model="vm.user.lastName" required />
         </div>
-      </form>
-
-    </div>
-
-  </div>
+        <div class="form-group">
+            <label for="email">E-Mail</label>
+            <input type="text" id="email" class="form-control" ng-model="vm.user.email" required />
+        </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="userName" class="form-control" ng-model="vm.user.userName" required />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" class="form-control" ng-model="vm.user.password" />
+        </div>
+        <!-- <div class="form-group">
+           <label for="password">Password REPEAT</label>
+           <input type="password" id="password" class="form-control" ng-model="vm.user.password" />
+         </div>-->
+        <div class="form-group">
+            <button class="btn btn-primary" ng-click="vm.saveUser()">Save</button>
+            <button class="btn btn-danger" ng-click="vm.deleteUser()">Delete</button>
+        </div>
+    </form>
 </div>
