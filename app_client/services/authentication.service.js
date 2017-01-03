@@ -51,6 +51,10 @@
       });
     };
 
+    project = function(project) {
+      return $http.post('/api/projectCreate', project);
+    };
+
     login = function(user) {
       return $http.post('/api/login', user).success(function(data) {
         saveToken(data.token);
@@ -67,6 +71,7 @@
       getToken : getToken,
       isLoggedIn : isLoggedIn,
       register : register,
+        project : project,
       login : login,
       logout : logout
     };

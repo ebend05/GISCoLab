@@ -5,6 +5,10 @@ var projectSchema = new mongoose.Schema({
        type: String,
        required: true
    },
+    userName: {
+      type: String,
+        required: true
+    },
     projectName: {
        type: String,
        required: true
@@ -13,10 +17,11 @@ var projectSchema = new mongoose.Schema({
        type: Date,
        required: true
     },
+    /*
     dateEdited: {
        type: Date,
        required: true
-    },
+    },*/
     collaborators: [{
        type: String,
        required: false

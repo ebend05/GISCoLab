@@ -1,9 +1,27 @@
 var mongoose = require('mongoose');
-var project = mongoose.model('Project');
+var Project = mongoose.model('Project');
+var User = mongoose.model('User');
 
 var _ = require( 'lodash' );
 
+module.exports.createProject = function(req, res){
+    var project = new Project();
 
+    var userid = User.findOne(req.body.userName);
+
+    project.projectName = req.body.projectName;
+    project.userName = req.body.userName;
+    project.ownerID = userid._id;
+    project.dateCreated = Date.now();
+    project.collaborators = req.body.collaborators;
+
+    project.save(function(err) {
+        res.status(200);
+        res.json({
+            "status": "everything worked fine"
+        });
+    });
+};
 
 module.exports.projectRead = function(req, res) {
 

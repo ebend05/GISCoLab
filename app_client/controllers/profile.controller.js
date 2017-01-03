@@ -22,13 +22,17 @@
       });
 
       function saveUser() {
-          userService.update(vm.user)
-              .then(function(){
-                  $location.path('/account');
-              })
-              .catch(function (e) {
-                  console.log(e);
-              });
+          if (vm.user.password !== vm.user.password2) {
+              alert("Paswörter stimmen nicht überein!");
+          } else {
+              userService.update(vm.user)
+                  .then(function () {
+                      $location.path('/account');
+                  })
+                  .catch(function (e) {
+                      console.log(e);
+                  });
+          }
       }
 
       function deleteUser() {

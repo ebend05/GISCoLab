@@ -24,26 +24,21 @@
 </nav>
 
 <div class="container">
-
-    <div class="row">
-        <div class="col-xs-3">
-            <img src="../styles/images/Download.jpg"> <!-- Profilbild -->
-    <p>Projekte</p> <!-- Links zu von der Person/von dir abonnierte/kollaborierende/erstellte Projekte -->
-    <p>Kollegen</p> <!-- Links zu deinen "Kollegen"/Freunden -->
-    <p>abonnierte personen</p> <!-- Von dir abonnierte Personen -->
-    </div>
-    <div class="col-xs-8"> <!-- Persönliche Daten  -->
-    <p>Vorname: {{vm.user.firstName}}</p>
-    <p>Nachname: {{vm.user.lastName}}</p>
-    <p>e-mail: {{vm.user.email}}</p>
-    <p>Username: {{vm.user.userName}}</p>
-    <p>Geburtstag: {{vm.user.birthday}}</p>
-    <p>Info: {{vm.user.info}}</p>
-    <p>Registrierungsdatum: {{vm.user.registrDate}}</p>
-</div>
-        <a href="/profile" class="btn btn-link">Profil bearbeiten</a>
-<div class="col-xs-1"> <!-- Einstellungen/Bei Fremdprofilen: Abonnieren-Button -->
-    <img src="../styles/images/Zahnrad.png" style="width: 70%; align: right">
-</div>
-</div>
+    <form method="post" ng-submit="vm.onSubmit()">
+        <div class="form-group">
+            <label  for="projectName">Project name</label>
+            <input type="text" id="projectName" class="form-control" ng-model="vm.project.projectName" required />
+        </div>
+        <div class="form-group">
+            <label for="email">kollaborierende Personen</label>
+            <input type="email" id="email" class="form-control" ng-model="vm.project.email" multiple required />
+        </div>
+        <div class="form-group">
+            <label for="userName">Username</label>
+            <input type="text" id="userName" class="form-control" ng-model="vm.project.userName" required />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success" style="width: 60%; margin-top: 1rem">Create!</button>
+        </div>
+    </form>
 </div>

@@ -13,7 +13,11 @@
         lastName: "",
         email: "",
         userName: "",
-        password: ""
+        password: "",
+        password2: "",
+        birthday: "",
+        info: "",
+        registrDate: ""
     };
       
       /* once Front End Input is acquainted, include this: 
@@ -28,15 +32,19 @@
       */
 
     vm.onSubmit = function () {
-      console.log('Submitting registration');
-      authentication
-        .register(vm.credentials)
-        .error(function(err){
-          alert(err);
-        })
-        .then(function(){
-          $location.path('/account');
-        });
+        if (vm.credentials.password !== vm.credentials.password2) {
+            alert("Passwwörter stimmen nicht überein!");
+        } else {
+            console.log('Submitting registration');
+            authentication
+                .register(vm.credentials)
+                .error(function (err) {
+                    alert(err);
+                })
+                .then(function () {
+                    $location.path('/account');
+                });
+        }
     };
 
   }

@@ -29,6 +29,11 @@
             controller: 'projectsCtrl',
             controllerAs: 'vm'
         })
+        .when('/projectCreate', {
+          templateUrl: 'views/projectCreate.view.html',
+            controller: 'projectsCreateCtrl',
+            controllerAs: 'vm'
+        })
         .when('/account', {
           templateUrl: 'views/account.view.html',
             controller: 'accountCtrl',
