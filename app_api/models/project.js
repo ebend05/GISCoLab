@@ -7,7 +7,8 @@ var projectSchema = new mongoose.Schema({
    },
     userName: {
       type: String,
-        required: true
+        required: true,
+        unique: true
     },
     projectName: {
        type: String,

@@ -7,11 +7,11 @@ var _ = require( 'lodash' );
 module.exports.createProject = function(req, res){
     var project = new Project();
 
-    var userid = User.findOne(req.body.userName);
+   // var userid = User.findOne(req.body.userName);
 
     project.projectName = req.body.projectName;
     project.userName = req.body.userName;
-    project.ownerID = userid._id;
+    //project.ownerID = userid._id;
     project.dateCreated = Date.now();
     project.collaborators = req.body.collaborators;
 
