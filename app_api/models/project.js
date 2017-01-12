@@ -14,15 +14,18 @@ var projectSchema = new mongoose.Schema({
        type: String,
        required: true
     },
+    info: {
+      type: String,
+        required: true
+    },
     dateCreated: {
        type: Date,
        required: true
     },
-    /*
     dateEdited: {
        type: Date,
-       required: true
-    },*/
+       required: false
+    },
     collaborators: [{
        type: String,
        required: false

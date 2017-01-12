@@ -2,16 +2,20 @@ var mongoose = require('mongoose');
 var Project = mongoose.model('Project');
 var User = mongoose.model('User');
 
-var _ = require( 'lodash' );
+//var _ = require( 'lodash' );
 
 module.exports.createProject = function(req, res){
     var project = new Project();
 
-   // var userid = User.findOne(req.body.userName);
+    User.findOne({'userName': req.body.userName}, function (err, obj){
+        if (err){
+            alert("something went wrong");
+        } else {
 
     project.projectName = req.body.projectName;
     project.userName = req.body.userName;
-    //project.ownerID = userid._id;
+    project.ownerID = obj._id;
+    project.info = req.body.info;
     project.dateCreated = Date.now();
     project.collaborators = req.body.collaborators;
 
@@ -20,6 +24,8 @@ module.exports.createProject = function(req, res){
         res.json({
             "status": "everything worked fine"
         });
+    });
+    }
     });
 };
 
@@ -33,9 +39,12 @@ module.exports.projectRead = function(req, res) {
             this means, the respective project._id must be provided as JSON to the function (or otherwise attribute of function call, in this case, change attribute formatting).
     */
     Project
-      .findById(req.payload._id)
-        .exec(function(err, user) {
-            res.status(200).json(user);
+      .findOne({'ownerID': req.payload._id}, function(err, obj){
+        if(err){
+            res.status(401).json("couldnt load the project");
+        }else{
+            res.status(200).json(obj);
+        }
       });
 };
 
@@ -50,6 +59,19 @@ module.exports.projectRead = function(req, res) {
 // create and handle edit logging
 
 module.exports.projectUpdate = function(req, res) {
+
+    var query = {'ownerID': req.payload._id};
+
+    Project
+        .findOneAndUpdate(query, req.body, function(err, obj) {
+           if(err){
+               res.status(401).json("couldnt update the project");
+           } else{
+               res.status(200).json(obj);
+           }
+        });
+
+    /*
     if (!req.payload._id) {
         res.status(401).json({
             "message": "UnauthorizedError: cannot update project without being logged in as a user"
@@ -82,11 +104,25 @@ module.exports.projectUpdate = function(req, res) {
                     })
                 }
             });
-    }
+    }*/
 };
 
 
 module.exports.projectDelete = function (req, res) {
+
+    var query = {'ownerID': req.payload._id};
+
+    Project
+        .findOne(query, function(err, obj) {
+            if(err){
+                res.status(401).json("couldnt delete the project");
+            } else{
+                obj.remove();
+                res.status(200).json("removed the project");
+            }
+        });
+
+    /*
     if (!req.payload._id) {
         res.status(401).json({
             "message": "UnauthorizedError: cannot delete profile without being logged in to it"
@@ -108,5 +144,5 @@ module.exports.projectDelete = function (req, res) {
                     });
                 }
             });
-    }
+    }*/
 };

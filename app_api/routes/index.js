@@ -17,9 +17,9 @@ router.post('/profileDelete', auth, ctrlProfile.profileDelete);
 
 // project
 router.post('/projectCreate', ctrlProject.createProject);
-//router.get('/project', ctrlProject.projectRead);
-//router.post('/projectUpdate', auth, ctrlProject.projectUpdate);
-//router.post('/projectDelete', auth, ctrlProject.projectDelete);
+router.get('/project', auth, ctrlProject.projectRead);
+router.post('/projectUpdate', auth, ctrlProject.projectUpdate);
+router.post('/projectDelete', auth, ctrlProject.projectDelete);
 
 
 // authentication

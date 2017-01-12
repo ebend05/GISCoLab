@@ -8,7 +8,6 @@
     function userService($http, authentication) {
 
         function update(user) {
-            console.log(user);
             return $http.post('/api/profileUpdate', user, {
                 headers: {
                     Authorization: 'Bearer ' + authentication.getToken()

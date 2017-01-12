@@ -15,8 +15,17 @@
       });
     };
 
+      var getProject = function () {
+          return $http.get('/api/project', {
+              headers: {
+                  Authorization: 'Bearer '+ authentication.getToken()
+              }
+          });
+      };
+
     return {
-      getProfile : getProfile
+      getProfile : getProfile,
+        getProject : getProject
     };
   }
 
