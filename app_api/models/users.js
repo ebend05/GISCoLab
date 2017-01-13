@@ -10,7 +10,8 @@ var userSchema = new mongoose.Schema({
     },
     userName: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     firstName: {
         type: String,
@@ -32,6 +33,14 @@ var userSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    ownProjects:[{
+        type: String,
+        required: false
+    }],
+    coopProjects:[{
+       type: String,
+       required: false
+    }],
     hash: String,
     salt: String
 });
