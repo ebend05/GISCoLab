@@ -22,7 +22,7 @@ var projectSchema = new mongoose.Schema({
      *  --> pro User kann nur ein Projekt mit gleichem projectName erstellt werden,
      *      aber global gesehen sind gleiche Projekt-Namen möglich
      *
-     *  TODO: falls diese Lösung sich als blöd erweist, killen und projectName required:true setzen
+     *  TODO: falls diese Lösung sich als blöd erweist, killen und projectName unique:true setzen
      */
     uniqueKey: {
         type: String,
