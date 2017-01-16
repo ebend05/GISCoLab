@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="giscolab">
+<html style="height: 100%; width: 100%" ng-app="giscolab">
 <head>
   <title>GISCoLab</title>
   <base href="/">
@@ -8,22 +8,19 @@
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css"/>
+  <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css">
+  <link rel="stylesheet" href="bower_components/webix/codebase/webix.css">
   <!-- endbower -->
   <!-- endbuild -->
 
   <!-- build:css({.tmp,app}) styles/main.css -->
-  <link rel="stylesheet" href="styles/css/background.css"/>
-  <link rel="stylesheet" href="styles/css/current.css"/>
-  <link rel="stylesheet" href="styles/css/navbar.css"/>
-  <link rel="stylesheet" href="styles/css/navbarblue.css"/>
-  <link rel="stylesheet" href="styles/css/navbarorange.css"/>
   <link rel="stylesheet" href="styles/css/navbarpetrol.css"/>
   <link rel="stylesheet" href="styles/css/project.css"/>
   <link rel="stylesheet" href="styles/css/style.css"/>
   <!-- endbuild -->
 </head>
-<body>
-<div ng-view></div>
+<body style="width: 100%; height: 100%">
+<div style="height: 100%; width: 100%" ng-view></div>
 
   <!-- build:js scripts/vendor.js -->
   <!-- bower:js -->
@@ -32,11 +29,14 @@
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <script src="bower_components/leaflet/dist/leaflet.js"></script>
+  <script src="bower_components/webix/codebase/webix.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
   <!-- build:js({.tmp,app}) scripts/scripts.js -->
   <script src="app.js"></script>
+  <script src="dist/angular-leaflet-directive.min.js"></script>
   <script src="controllers/home.controller.js"></script>
   <script src="controllers/profile.controller.js"></script>
   <script src="controllers/register.controller.js"></script>
@@ -52,6 +52,7 @@
   <script src="services/projectService.js"></script>
   <script src="directives/navigation/navigation.controller.js"></script>
   <script src="directives/navigation/navigation.directive.js"></script>
+  <script src="map.js"></script>
   <!-- endbuild -->
 
 </body>
