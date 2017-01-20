@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var Project = mongoose.model('Project');
 
 module.exports.profileRead = function(req, res) {
 
@@ -9,9 +10,12 @@ module.exports.profileRead = function(req, res) {
     });
   } else {
     User
-      .findById(req.payload._id)
-      .exec(function(err, user) {
-        res.status(200).json(user);
+      .findById(req.payload._id, function (err, user){
+          if(err){
+              res.status(401).json("couldnt load profile");
+          } else {
+              res.status(200).json(user);
+          }
       });
   }
 

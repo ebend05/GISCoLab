@@ -4,8 +4,8 @@
         .module('giscolab')
         .controller('accountCtrl', accountCtrl);
 
-    accountCtrl.$inject = ['$location', 'meanData', 'userService'];
-    function accountCtrl($location, meanData, userService) {
+    accountCtrl.$inject = ['$location', 'meanData', 'userService', '$scope'];
+    function accountCtrl($location, meanData, userService, $scope) {
         var vm = this;
 
         vm.user = {};
@@ -17,6 +17,12 @@
             .error(function (e) {
                 console.log(e);
             });
+
+        $scope.myFunction = function (id) {
+
+        }
+
+
     }
 
 })();

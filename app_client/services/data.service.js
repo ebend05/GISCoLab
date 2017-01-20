@@ -15,7 +15,7 @@
       });
     };
 
-      var getProject = function () {
+      var getProject = function () { //id übergeben die in der api dann rausgesucht wird; genauso für profile; wenn leer dann aktuelles aufrufen
           return $http.get('/api/project', {
               headers: {
                   Authorization: 'Bearer '+ authentication.getToken()

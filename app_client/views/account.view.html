@@ -28,7 +28,17 @@
     <div class="row">
         <div class="col-xs-3">
             <img src="../styles/images/Download.jpg"> <!-- Profilbild -->
-    <p>Projekte</p> <!-- Links zu von der Person/von dir abonnierte/kollaborierende/erstellte Projekte -->
+    <p>Projekte:</p> <!-- Links zu von der Person/von dir abonnierte/kollaborierende/erstellte Projekte -->
+            <table style="border: 1px solid black";>
+                <tr style="border: 1px solid black";>
+                    <th>eigene Projekte</th>
+                    <th>kollaborierende Projekte</th>
+                </tr>
+                <tr style="border: 1px solid black";>
+                    <td style="border: 1px solid black"; ng-repeat="ownProjects in vm.user.ownProjects"><a ng-click="myFunction(ownProjects)" href="/projectActive">{{ownProjects}}</a></td>
+                    <td style="border: 1px solid black"; ng-repeat="coopProjects in vm.user.coopProjects"><a ng-click="myFunction(coopProjects)" href="/projectActive">{{coopProjects}}</a></td>
+                </tr>
+            </table>
     <p>Kollegen</p> <!-- Links zu deinen "Kollegen"/Freunden -->
     <p>abonnierte Personen</p> <!-- Von dir abonnierte Personen -->
     </div>

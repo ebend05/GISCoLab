@@ -14,6 +14,7 @@
             userName: "",
             info: "",
             dateCreated: "",
+            uniqueKey: "",
             collaborators: [""]
         };
 
@@ -21,10 +22,11 @@
             console.log("submitting project");
             var colArray = vm.project.collaborators.split(', ');
             vm.project.collaborators = colArray;
+            vm.project.uniqueKey = vm.project.userName + vm.project.projectName;
             authentication
                 .project(vm.project)
                 .error(function (err) {
-                alert(err);
+                    alert(err);
                 })
                 .then(function () {
                     $location.path('/projectActive');
