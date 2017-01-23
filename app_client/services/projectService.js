@@ -21,9 +21,21 @@
                 }})
         };
 
+        var proID;
+
+        function setID(value){
+            proID = value;
+        };
+
+        function getID(){
+            return proID;
+        };
+
         return {
             updateProject : updateProject,
-            deleteProject : deleteProject
+            deleteProject : deleteProject,
+            setID : setID,
+            getID : getID
         };
 
     }

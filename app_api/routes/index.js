@@ -5,6 +5,11 @@ var auth = jwt({
   secret: 'MY_SECRET',
   userProperty: 'payload'
 });
+/*
+var proID = {
+  projectProperty: 'payload'
+};
+*/
 
 var ctrlProfile = require('../controllers/profile');
 var ctrlAuth = require('../controllers/authentication');
@@ -17,10 +22,9 @@ router.post('/profileDelete', auth, ctrlProfile.profileDelete);
 
 // project
 router.post('/projectCreate', ctrlProject.createProject);
-router.get('/project', auth, ctrlProject.projectRead);
+router.get('/project/:id', ctrlProject.projectRead);
 router.post('/projectUpdate', auth, ctrlProject.projectUpdate);
 router.post('/projectDelete', auth, ctrlProject.projectDelete);
-
 
 // authentication
 router.post('/register', ctrlAuth.register);

@@ -4,8 +4,8 @@
         .module('giscolab')
         .controller('accountCtrl', accountCtrl);
 
-    accountCtrl.$inject = ['$location', 'meanData', 'userService', '$scope'];
-    function accountCtrl($location, meanData, userService, $scope) {
+    accountCtrl.$inject = ['$location', 'meanData', 'userService', '$scope', '$rootScope', 'projectService'];
+    function accountCtrl($location, meanData, userService, $scope, $rootScope, projectService) {
         var vm = this;
 
         vm.user = {};
@@ -19,7 +19,8 @@
             });
 
         $scope.myFunction = function (id) {
-
+            projectService.setID(id);
+            $location.path('/projectActive');
         }
 
 

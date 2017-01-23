@@ -4,8 +4,8 @@
         .module('giscolab')
         .controller('projectsCreateCtrl', projectsCreateCtrl);
 
-    projectsCreateCtrl.$inject = ['$location', 'authentication'];
-    function projectsCreateCtrl($location, authentication) {
+    projectsCreateCtrl.$inject = ['$location', 'authentication', '$scope'];
+    function projectsCreateCtrl($location, authentication, $scope) {
         var vm = this;
 
         vm.project = {
@@ -28,9 +28,12 @@
                 .error(function (err) {
                     alert(err);
                 })
-                .then(function () {
-                    $location.path('/projectActive');
+                .then(function(){
+                    console.log("alles gut");
+                    $location.path('/account');
                 });
         }
+
+
     }
 })();

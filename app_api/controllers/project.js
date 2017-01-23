@@ -25,7 +25,8 @@ module.exports.createProject = function(req, res){
                 res.json({
                     "status": "everything worked fine"
                 });
-                obj.ownProjects = project._id;
+                obj.ownProjects.projectID = project._id;
+                obj.ownProjects.projectName = project.projectName;
                 obj.save(function(error){
                     if(error){
                         alert("something went wrong");
@@ -39,7 +40,8 @@ module.exports.createProject = function(req, res){
                     if (err){
                         alert("something went wrong");
                     } else {
-                        collabo.coopProjects = pid;
+                        collabo.coopProjects.projectID = pid;
+                        collabo.coopProjects.projectName = project.projectName;
                         collabo.save(function(e){
                             if(e){
                                 alert("something went wrong");
@@ -61,11 +63,38 @@ module.exports.projectRead = function(req, res) {
 
      this means, the respective project._id must be provided as JSON to the function (or otherwise attribute of function call, in this case, change attribute formatting).
      */
+    /*
     Project
         .findOne({'ownerID': req.payload._id}, function(err, obj){
             if(err){
                 res.status(401).json("couldnt load the project");
             }else{
+                res.status(200).json(obj);
+            }
+        });
+        */
+    console.log("irgendwas");
+
+    console.log(req.params.id);
+
+    Project
+        .findById(req.params.id, function(err, obj){
+            if(err){
+                res.status(401).json("could not load the project");
+            } else {
+                res.status(200).json(obj);
+            }
+        });
+};
+
+module.exports.projectRead2 = function(req, res){
+console.log("irgendwas");
+    console.log(req);
+    Project
+        .findById(req.body, function(err, obj){
+            if(err){
+                res.status(401).json("could not load the project");
+            } else {
                 res.status(200).json(obj);
             }
         });

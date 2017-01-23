@@ -35,8 +35,8 @@
                     <th>kollaborierende Projekte</th>
                 </tr>
                 <tr style="border: 1px solid black";>
-                    <td style="border: 1px solid black"; ng-repeat="ownProjects in vm.user.ownProjects"><a ng-click="myFunction(ownProjects)" href="/projectActive">{{ownProjects}}</a></td>
-                    <td style="border: 1px solid black"; ng-repeat="coopProjects in vm.user.coopProjects"><a ng-click="myFunction(coopProjects)" href="/projectActive">{{coopProjects}}</a></td>
+                    <td style="border: 1px solid black"; ng-repeat="ownProject in vm.user.ownProjects"><a ng-click="myFunction(ownProject)">{{ownProject}}</a></td>
+                    <td style="border: 1px solid black"; ng-repeat="coopProject in vm.user.coopProjects"><a ng-click="myFunction(coopProject)">{{coopProject}}</a></td>
                 </tr>
             </table>
     <p>Kollegen</p> <!-- Links zu deinen "Kollegen"/Freunden -->
