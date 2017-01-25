@@ -50,6 +50,11 @@ var projectSchema = new mongoose.Schema({
        required: false
     }],
 
+    collaboratorID: [{
+        type: String,
+        required: false
+    }],
+
     filePath: {
        type: String,
        required: false

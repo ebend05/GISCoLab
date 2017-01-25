@@ -21,6 +21,18 @@ module.exports.profileRead = function(req, res) {
 
 };
 
+module.exports.profileRead2 = function(req, res){
+
+    User
+        .findById(req.params.id, function(err, obj){
+            if(err){
+                res.status(401).json("could not load the profile");
+            } else {
+                res.status(200).json(obj);
+            }
+        });
+}
+
 
 module.exports.profileUpdate = function(req, res) {
     if (!req.payload._id) {

@@ -44,6 +44,11 @@
             controller: 'projectUpdateCtrl',
             controllerAs: 'vm'
         })
+        .when('/userProfile', {
+          templateUrl: 'views/userProfile.view.html',
+            controller: 'userProfileCtrl',
+            controllerAs: 'vm'
+        })
         .when('/account', {
           templateUrl: 'views/account.view.html',
             controller: 'accountCtrl',

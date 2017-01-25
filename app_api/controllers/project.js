@@ -9,11 +9,10 @@ module.exports.createProject = function(req, res){
 
     User.findOne({'userName': req.body.userName}, function (err, obj){
         if (err){
-            alert("something went wrong");
+            console.log("something went wrong");
         } else {
 
             project.projectName = req.body.projectName;
-            project.userName = req.body.userName;
             project.uniqueKey = req.body.uniqueKey;
             project.ownerID = obj._id;
             project.info = req.body.info;
@@ -25,26 +24,23 @@ module.exports.createProject = function(req, res){
                 res.json({
                     "status": "everything worked fine"
                 });
-                obj.ownProjects.projectID = project._id;
-                obj.ownProjects.projectName = project.projectName;
+                obj.ownProjects.push({projectName: req.body.projectName, projectID: project._id});
                 obj.save(function(error){
                     if(error){
-                        alert("something went wrong");
+                        console.log("something went wrong");
                     }
                 });
             });
-            var pid = project._id;
             var coll = req.body.collaborators;
             for(var i = 0; i < coll.length; i++){
                 User.findOne({'email': coll[i]}, function (err, collabo){
                     if (err){
-                        alert("something went wrong");
+                        console.log("something went wrong");
                     } else {
-                        collabo.coopProjects.projectID = pid;
-                        collabo.coopProjects.projectName = project.projectName;
+                        collabo.coopProjects.push({projectName: project.projectName, projectID: project._id});
                         collabo.save(function(e){
                             if(e){
-                                alert("something went wrong");
+                                console.log("something went wrong");
                             }
                         })
                     }
@@ -52,6 +48,16 @@ module.exports.createProject = function(req, res){
             }
         }
     });
+    for(var j=0; j < req.body.collaborators.length; j++){
+        User.findOne({'email': req.body.collaborators[j]}, function (e, col){
+            if(e){
+                console.log("something went wrong");
+            } else {
+                project.collaboratorID.push(col._id);
+                project.update();
+            }
+        });
+    }
 };
 
 module.exports.projectRead = function(req, res) {
@@ -73,7 +79,6 @@ module.exports.projectRead = function(req, res) {
             }
         });
         */
-    console.log("irgendwas");
 
     console.log(req.params.id);
 
@@ -87,20 +92,6 @@ module.exports.projectRead = function(req, res) {
         });
 };
 
-module.exports.projectRead2 = function(req, res){
-console.log("irgendwas");
-    console.log(req);
-    Project
-        .findById(req.body, function(err, obj){
-            if(err){
-                res.status(401).json("could not load the project");
-            } else {
-                res.status(200).json(obj);
-            }
-        });
-};
-
-
 // ***********
 // ** TODO: **
 // ***********
@@ -112,10 +103,10 @@ console.log("irgendwas");
 
 module.exports.projectUpdate = function(req, res) {
 
-    var query = {'ownerID': req.payload._id};
+    //var query = {'ownerID': req.payload._id};
 
     Project
-        .findOneAndUpdate(query, req.body, function(err, obj) {
+        .findByIdAndUpdate(req.params.id, req.body, function(err, obj) {
             if(err){
                 res.status(401).json("couldnt update the project");
             } else{
@@ -162,17 +153,65 @@ module.exports.projectUpdate = function(req, res) {
 
 module.exports.projectDelete = function (req, res) {
 
-    var query = {'ownerID': req.payload._id};
+    //var query = {'ownerID': req.payload._id};
 
     Project
-        .findOne(query, function(err, obj) {
+        .findById(req.params.id, function(err, obj) {
             if(err){
                 res.status(401).json("couldnt delete the project");
             } else{
+                User.findOneAndUpdate({_id: obj.ownerID}, {$pull: {ownProjects: {projectID: obj._id}}}, function(err, data){
+                    if(err){
+                        console.log("something went wrong");
+                    } else {
+                        console.log("perfect");
+                    }
+                });
+
+                for(var i = 0; i < obj.collaborators.length; i++){
+                    User.findOneAndUpdate({email: obj.collaborators[i]}, {$pull: {coopProjects: {projectID: obj._id}}}, function(err, data){
+                        if(err){
+                            console.log("something went wrong");
+                        } else {
+                            console.log("nice");
+                        }
+                    });
+                }
                 obj.remove();
                 res.status(200).json("removed the project");
+
+                /*
+                User
+                    .findById(obj.ownerID, function (e, owner){
+                        if(e){
+                            console.log("something went wrong");
+                        }else {
+                            //owner.ownProjects.pull({projectName: obj.projectName, projectID: obj._id});
+                            //for(var j=0; j < owner.ownProjects.length; j++){
+                            //if (owner.ownProjects[j].projectID === obj._id) {
+                                //delete owner.ownProjects[{projectName: obj.projectName, projectID:obj._id}];
+                            //}
+                        //}
+                        }});
+*/
+
+                /*
+                var coll = obj.collaborators;
+                for(var i = 0; i < coll.length; i++){
+                    User.findOne({'email': coll[i]}, function (error, collabo) {
+                        if (error) {
+                            console.log("something went wrong");
+                        } else {
+                            //collabo.coopProjects.pull({projectName: obj.projectName, projectID: obj._id});
+                            //for(var m=0; m < collabo.coopProjects.length; m++){
+                            //if (collabo.coopProjects[m].projectID === obj._id) {
+                                //delete collabo.coopProjects[{projectName: obj.projectName, projectID:obj._id}];
+                            //}}
+                        }
+                    });
             }
-        });
+            */
+        }});
 
     /*
      if (!req.payload._id) {

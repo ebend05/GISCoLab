@@ -28,7 +28,7 @@
     <div class="row">
         <div class="col-xs-3">
             <img src="../styles/images/Download.jpg"> <!-- Profilbild -->
-    <p>Projekte:</p> <!-- Links zu von der Person/von dir abonnierte/kollaborierende/erstellte Projekte -->
+            <p>Projekte:</p> <!-- Links zu von der Person/von dir abonnierte/kollaborierende/erstellte Projekte -->
             <table style="border: 1px solid black";>
                 <tr style="border: 1px solid black";>
                     <th>eigene Projekte</th>
@@ -36,7 +36,7 @@
                 </tr>
                 <tr style="border: 1px solid black"; ng-repeat="ownProject in vm.user.ownProjects">
                     <td style="border: 1px solid black";>{{ownProject.projectName}}</td>
-                        <td style="border: 1px solid black";><a ng-click="myFunction(ownProject.projectID)">{{ownProject.projectID}}</a></td>
+                    <td style="border: 1px solid black";><a ng-click="myFunction(ownProject.projectID)">{{ownProject.projectID}}</a></td>
                 </tr>
             </table>
             <br>
@@ -50,21 +50,17 @@
                     <td style="border: 1px solid black";><a ng-click="myFunction(coopProject.projectID)">{{coopProject.projectID}}</a></td>
                 </tr>
             </table>
-    <p>Kollegen</p> <!-- Links zu deinen "Kollegen"/Freunden -->
-    <p>abonnierte Personen</p> <!-- Von dir abonnierte Personen -->
+            <p>Kollegen</p> <!-- Links zu deinen "Kollegen"/Freunden -->
+            <p>abonnierte Personen</p> <!-- Von dir abonnierte Personen -->
+        </div>
+        <div class="col-xs-8"> <!-- Persönliche Daten  -->
+            <p>Vorname: {{vm.user.firstName}}</p>
+            <p>Nachname: {{vm.user.lastName}}</p>
+            <p>E-mail: {{vm.user.email}}</p>
+            <p>Username: {{vm.user.userName}}</p>
+            <p>Geburtstag: {{vm.user.birthday}}</p>
+            <p>Info: {{vm.user.info}}</p>
+            <p>Registrierungsdatum: {{vm.user.registrDate}}</p>
+        </div>
     </div>
-    <div class="col-xs-8"> <!-- Persönliche Daten  -->
-    <p>Vorname: {{vm.user.firstName}}</p>
-    <p>Nachname: {{vm.user.lastName}}</p>
-    <p>E-mail: {{vm.user.email}}</p>
-    <p>Username: {{vm.user.userName}}</p>
-    <p>Geburtstag: {{vm.user.birthday}}</p>
-    <p>Info: {{vm.user.info}}</p>
-    <p>Registrierungsdatum: {{vm.user.registrDate}}</p>
-</div>
-        <a href="/profile" class="btn btn-link">Profil bearbeiten</a>
-<div class="col-xs-1"> <!-- Einstellungen/Bei Fremdprofilen: Abonnieren-Button -->
-    <img src="../styles/images/Zahnrad.png" style="width: 70%; align: right">
-</div>
-</div>
 </div>

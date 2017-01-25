@@ -7,15 +7,15 @@
     projectService.$inject = ['$http', 'authentication'];
     function projectService($http, authentication) {
 
-        function updateProject(project) {
-            return $http.post('/api/projectUpdate', project, {
+        function updateProject(project, id) {
+            return $http.post('/api/projectUpdate/'+ id, project, {
                 headers: {
                     Authorization: 'Bearer ' + authentication.getToken()
                 }})
         };
 
-        function deleteProject(project) {
-            return $http.post('/api/projectDelete', project, {
+        function deleteProject(project, id) {
+            return $http.post('/api/projectDelete/'+ id, project, {
                 headers: {
                     Authorization: 'Bearer ' + authentication.getToken()
                 }})

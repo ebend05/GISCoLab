@@ -34,24 +34,12 @@ var userSchema = new mongoose.Schema({
         required: false
     },
     ownProjects:[{
-        projectName: {
-            type: String,
-            required: false
-        },
-        projectID: {
-            type: String,
-            required: false
-        }
+        projectName: String,
+        projectID: String
     }],
     coopProjects:[{
-        projectName: {
-            type: String,
-            required: false
-        },
-        projectID: {
-            type: String,
-            required: false
-        }
+        projectName: String,
+        projectID: String
     }],
     hash: String,
     salt: String

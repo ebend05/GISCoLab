@@ -17,14 +17,15 @@ var ctrlProject = require('../controllers/project');
 
 // profile
 router.get('/profile', auth, ctrlProfile.profileRead);
+router.get('/profile/:id', ctrlProfile.profileRead2);
 router.post('/profileUpdate', auth, ctrlProfile.profileUpdate);
 router.post('/profileDelete', auth, ctrlProfile.profileDelete);
 
 // project
 router.post('/projectCreate', ctrlProject.createProject);
 router.get('/project/:id', ctrlProject.projectRead);
-router.post('/projectUpdate', auth, ctrlProject.projectUpdate);
-router.post('/projectDelete', auth, ctrlProject.projectDelete);
+router.post('/projectUpdate/:id', auth, ctrlProject.projectUpdate);
+router.post('/projectDelete/:id', auth, ctrlProject.projectDelete);
 
 // authentication
 router.post('/register', ctrlAuth.register);

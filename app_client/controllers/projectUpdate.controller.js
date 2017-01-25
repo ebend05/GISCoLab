@@ -13,7 +13,9 @@
         vm.saveProject = saveProject;
         vm.deleteProject = deleteProject;
 
-        meanData.getProject()
+        var pid = projectService.getID();
+
+        meanData.getProject(pid)
             .success(function(data) {
                 vm.project = data;
             })
@@ -23,7 +25,7 @@
 
         function saveProject() {
             vm.project.dateEdited = Date.now();
-                projectService.updateProject(vm.project)
+                projectService.updateProject(vm.project, pid)
                     .then(function () {
                         $location.path('/projectActive');
                     })
@@ -33,7 +35,7 @@
         }
 
         function deleteProject() {
-            projectService.deleteProject(vm.project)
+            projectService.deleteProject(vm.project, pid)
                 .then(function(){
                     $location.path('/projectActive');
                 })

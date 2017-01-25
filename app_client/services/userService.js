@@ -21,9 +21,21 @@
                 }})
         };
 
+        var collID;
+
+        function setCollID(value){
+            collID = value;
+        };
+
+        function getCollID(){
+            return collID;
+        };
+
         return {
             update : update,
-            deleteUsers : deleteUsers
+            deleteUsers : deleteUsers,
+            setCollID: setCollID,
+            getCollID: getCollID
         };
 
     }
