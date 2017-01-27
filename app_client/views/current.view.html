@@ -1,3 +1,8 @@
+<!-- <head>
+    <link rel="stylesheet" href="backgroundcurrent.css"/>
+</head>
+-->
+
 <nav class="navbar navbar-custom navbar-static-top">
     <div class="container">
         <div class="navbar-header">
@@ -6,8 +11,9 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="/projects">Projects</a></li>
-                <li><a href="/account">Profil</a></li>
+                <li><a href="/account">Profile</a></li>
                 <li class="active"><a href="/current">Current</a></li>
+                <li><a href="/about">About</a> </li>
             </ul>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <form id="signin" class="navbar-form navbar-right" role="form">
@@ -15,7 +21,7 @@
                         <input id="search" type="search" class="form-control" name="search" value="" placeholder="Search">
                     </div>
 
-                    <button id="logout" class="btn btn-danger">Logout</button>
+                    <button id="logout" class="btn btn-default">Logout</button>
                 </form>
 
             </div>
@@ -24,26 +30,28 @@
 </nav>
 
 
-<div style="height: 100%" class="row">
-    <div class="col-xs-2" style="height: 100%">
-        <nav class="navbar navbar-custom navbar-static-top">
-            <div class="container">
-                <div id="navbarshort" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li ng-click="treeview = false; buttonCodeToggle();" id="code"><a href="#">Code</a></li>
-                        <li ng-click="treeview = true; buttonTreeToggle();" id="otherdata"><a href="#">Other data</a></li>
-                    </ul>
-                </div><!--/.nav-collapse -->
-            </div>
-        </nav>
-        <textarea style="height: 80%; width: 100%" ng-hide="treeview"></textarea>
-        <div ng-show="treeview" id="treebox" style="width: 100%; height:80%;"></div>
-    </div>
-        <div style="height: 100%" class="col-xs-10" id="map">
 
+        <div style="height: 100%" class="row">
+            <div class="col-xs-2" style="height: 100%">
+                <nav class="navbar navbar-custom navbar-static-top">
+                    <div class="container">
+                        <div id="navbarshort" class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li ng-click="treeview = false; buttonCodeToggle();" id="code"><a href="#">Code</a></li>
+                                <li ng-click="treeview = true; buttonTreeToggle();" id="otherdata"><a href="#">Other data</a></li>
+                            </ul>
+                        </div><!--/.nav-collapse -->
+                    </div>
+                </nav>
+                <textarea style="height: 80%; width: 100%" ng-hide="treeview"></textarea>
+                <div ng-show="treeview" id="treebox" style="width: 100%; height:80%;"></div>
+            </div>
+                <div style="height: 100%" class="col-xs-10" id="map">
+
+                </div>
         </div>
-</div>
-<script type="text/javascript">
-    leaflet();
-</script>
+        <script type="text/javascript">
+            leaflet();
+        </script>
+
 

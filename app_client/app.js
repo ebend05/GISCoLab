@@ -54,6 +54,11 @@
             controller: 'accountCtrl',
             controllerAs: 'vm'
         })
+        .when('/about', {
+            templateUrl: 'views/about.view.html',
+            controller: 'aboutCtrl',
+            controllerAs: 'vm'
+        })
       .otherwise({redirectTo: '/'});
 
     // use the HTML5 History API

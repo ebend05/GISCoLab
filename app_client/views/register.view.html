@@ -1,9 +1,11 @@
 <div class="container">
 
   <div class="row" style="margin-top: 40px">
-    <div class="col-xs-2"></div>
-    <div class="col-xs-5">      <!-- GISCoLab Schriftzug -->
-      <h1 style="margin-top: 100px; font-size: 100px; color: white">GISCoLab</h1>
+    <div class="col-xs-0,5"></div>
+    <div class="col-xs-7">      <!-- GISCoLab Schriftzug -->
+      <object>
+        <img src="../styles/images/GISCoLab_Logo_black.svg" width="547" height="373" alt="GISCoLab_Logo_black">
+      </object>
     </div>
     <div class="col-xs-3">
       <div class="container" style="width: 100%">         <!-- Registrieren -->
@@ -15,8 +17,8 @@
           <input style="margin-top: 1rem" id="email" type="email" class="form-control" name="email" value="" placeholder="email" ng-model="vm.credentials.email">
           <input style="margin-top: 1rem" id="username" type="text" class="form-control" name="userName" value="" placeholder="UserName" ng-model="vm.credentials.userName">
           <input style="margin-top: 1rem" id="password" type="password" class="form-control" name="password" value="" placeholder="password" ng-model="vm.credentials.password">
-            <input style="margin-top: 1rem" id="passwordrep" type="password" class="form-control" name="passwordrep" value="" placeholer="password repeat" ng-model="vm.credentials.password2">
-            <button type="submit" class="btn btn-success" style="width: 60%; margin-top: 1rem">Register!</button>
+          <input style="margin-top: 1rem" id="passwordrep" type="password" class="form-control" name="passwordrep" value="" placeholder="password repeat" ng-model="vm.credentials.password2">
+            <button type="submit" class="btn btn-primary" style="width: 60%; margin-top: 1rem">Register!</button>
           </form>
         </div>
       </div>
