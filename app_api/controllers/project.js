@@ -8,7 +8,7 @@ module.exports.createProject = function(req, res){
     var project = new Project();
 
     User.findOne({'userName': req.body.userName}, function (err, obj){
-        if (err){
+        if (err || obj.id === null || obj.id === undefined){
             console.log("something went wrong");
         } else {
 
@@ -24,12 +24,15 @@ module.exports.createProject = function(req, res){
                 res.json({
                     "status": "everything worked fine"
                 });
-                obj.ownProjects.push({projectName: req.body.projectName, projectID: project._id});
-                obj.save(function(error){
-                    if(error){
-                        console.log("something went wrong");
-                    }
-                });
+                setTimeout( function ()
+                {
+                    obj.ownProjects.push({projectName: req.body.projectName, projectID: project._id});
+                    obj.save(function(error){
+                        if(error){
+                            console.log("something went wrong");
+                        }
+                    });
+                }, 50);
             });
             var coll = req.body.collaborators;
             for(var i = 0; i < coll.length; i++){
@@ -50,8 +53,12 @@ module.exports.createProject = function(req, res){
     });
     for(var j=0; j < req.body.collaborators.length; j++){
         User.findOne({'email': req.body.collaborators[j]}, function (e, col){
-            if(e){
+            if(e) {
                 console.log("something went wrong");
+            } else if (col === null)
+            {
+                console.log(req.body.collaborators[j] + " is not a valid collaborator")
+
             } else {
                 project.collaboratorID.push(col._id);
                 project.update();
