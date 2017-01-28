@@ -53,6 +53,10 @@
                     <p>Info: {{vm.project.info}}</p>
                     <p>Änderungsdatum: {{vm.project.dateEdited}}</p>
                 </div>
+                <div class="col-xs-3">
+                    <input name="textDatei" type="file" accept="text/*">
+                    <button ng-click ="uploadTextfile()">Upload</button>
+                </div>
                 <a href="/projectUpdate" class="btn btn-link">Projektinfos bearbeiten</a>
             </div>
         </div>

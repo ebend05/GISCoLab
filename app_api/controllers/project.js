@@ -65,6 +65,12 @@ module.exports.createProject = function(req, res){
             }
         });
     }
+    var exec = require('child_process').exec;
+    function puts(error, stdout, stderr) { if(error){ console.log(error)}else{console.log(stdout)} };
+    exec("cd projectData && mkdir "+req.body.projectName+"", puts);
+    exec("cd projectData/"+req.body.projectName+" && mkdir rScripts", puts);
+    exec("cd projectData/"+req.body.projectName+" && mkdir txtFiles", puts);
+    exec("cd projectData/"+req.body.projectName+" && mkdir geoTiffs", puts);
 };
 
 module.exports.projectRead = function(req, res) {

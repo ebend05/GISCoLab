@@ -20,6 +20,10 @@
                 console.log(e);
             });
 
+        $scope.uploadTextfile = function(){
+
+        }
+
         $scope.anFunction = function (id) {
             userService.setCollID(id);
             $location.path('/userProfile');

@@ -4,16 +4,35 @@
         .module('giscolab')
         .controller('currentCtrl', currentCtrl);
 
-    currentCtrl.$inject = ['$location', 'meanData', 'userService'];
-    function currentCtrl($location, meanData, userService, $scope) {
+    currentCtrl.$inject = ['$location', 'meanData', 'userService', '$scope', 'projectService'];
+    function currentCtrl($location, meanData, userService, $scope, projectService) {
         console.log("current Controller is running!!!");
+
+        var vm = this;
+
+        vm.project = {};
+
+        var pid = projectService.getID();
+
+        if(pid !== undefined) {
+            meanData.getProject(pid)
+                .success(function (data) {
+                    vm.project = data;
+                })
+                .error(function (e) {
+                    console.log(e);
+                });
+        } else {
+            alert("kein Projekt ausgewählt. Bitte erst eins auswählen!");
+        };
+
 
         //*****************************************************************************************************
         //*****************************************************************************************************
         //*****************************************************************************************************
         // Treeview
 
-        tree = new webix.ui({
+        var tree = new webix.ui({
             container:"treebox",
             view:"tree",
             data: [
@@ -34,7 +53,7 @@
         //*****************************************************************************************************
         //*****************************************************************************************************
 
-        /* var treeview;
+        var treeview;
 
         $scope.buttonCodeToggle = function(){
             angular.element( document.querySelector('#code')).addClass('active');
@@ -42,9 +61,9 @@
             treeview = false;
         };
         $scope.buttonTreeToggle = function(){
-            //angular.element( document.querySelector('#code')).removeClass('active');
-            // angular.element( document.querySelector('#otherdata')).addClass('active');
+            angular.element( document.querySelector('#code')).removeClass('active');
+            angular.element( document.querySelector('#otherdata')).addClass('active');
             treeview = true;
-        }; */
+        };
     }
 })();
