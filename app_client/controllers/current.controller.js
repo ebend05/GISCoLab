@@ -26,6 +26,7 @@
             alert("kein Projekt ausgewählt. Bitte erst eins auswählen!");
         };
 
+        console.log(vm.project);
 
         //*****************************************************************************************************
         //*****************************************************************************************************
@@ -36,18 +37,21 @@
             container:"treebox",
             view:"tree",
             data: [
-                { id:"branch1", value:"The Shawshank Redemption", data:[
-                    { id:"part1", value:"Part 1" },
-                    { id:"part2", value:"Part 2" }
+                { id:"branch1", value: "vm.project.filePath[0]", data:[  //funktioniert nicht, da vm.project nur oben im block gefüllt ist und nicht global
+                    { id:"part1", value: "vm.project.filePath[1]", data:[
+                        {id:"files1", value: "vm.project.filePath[2]"},
+                        {id:"files2", value: "vm.project.filePath[3]"},
+                        {id:"files3", value: "vm.project.filePath[4]"}
+                    ] }
                 ]}
             ]
         });
 
         //'node' variable will contain an object of the related tree node
-        var node = tree.getItem('branch1');
+        //var node = tree.getItem('branch1');
 
         //you can access data members directly
-        var value = node.value; // ->"The Shawshank Redemption"
+        //var value = node.value; // ->"The Shawshank Redemption"
 
         //*****************************************************************************************************
         //*****************************************************************************************************
@@ -65,5 +69,6 @@
             angular.element( document.querySelector('#otherdata')).addClass('active');
             treeview = true;
         };
+
     }
 })();

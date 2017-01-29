@@ -21,7 +21,11 @@
             });
 
         $scope.uploadTextfile = function(){
+//funktioniert nicht, da ich keine ahnung habe, wie man dateien in einem ordner speichert
+        }
 
+        $scope.uploadRscript = function(){
+            // selbes Problem wie oben
         }
 
         $scope.anFunction = function (id) {

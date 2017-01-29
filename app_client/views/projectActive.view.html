@@ -54,8 +54,14 @@
                     <p>Änderungsdatum: {{vm.project.dateEdited}}</p>
                 </div>
                 <div class="col-xs-3">
+                    <p>Eine Textdatei zum Projekt hinzufügen</p>
                     <input name="textDatei" type="file" accept="text/*">
                     <button ng-click ="uploadTextfile()">Upload</button>
+                </div>
+                <div class="col-xs-3">
+                    <p>Ein R-Script zum Projekt hinzufügen</p>
+                    <input name="RScript" type="file">
+                    <button ng-click ="uploadRscript()">Upload</button>
                 </div>
                 <a href="/projectUpdate" class="btn btn-link">Projektinfos bearbeiten</a>
             </div>
