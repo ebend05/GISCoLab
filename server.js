@@ -93,5 +93,12 @@ app.use(function(err, req, res, next) {
     });
 });
 
+app.use(function(req, res, next) {
+    console.log(req.method + ' ' + req.url + ' was requested by ' + req.connection.remoteAddress);
+
+    res.header('Access-Control-Allow-Origin', '*');    // allow CORS
+    next();
+});
+
 
 module.exports = app;

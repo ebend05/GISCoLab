@@ -26,6 +26,7 @@ router.post('/projectCreate', ctrlProject.createProject);
 router.get('/project/:id', ctrlProject.projectRead);
 router.post('/projectUpdate/:id', auth, ctrlProject.projectUpdate);
 router.post('/projectDelete/:id', auth, ctrlProject.projectDelete);
+router.post('/uploadtxt/:id', ctrlProject.uploadTxt);
 
 // authentication
 router.post('/register', ctrlAuth.register);

@@ -31,11 +31,16 @@
             return proID;
         };
 
+        function uploadTextFile(data, id){
+            return $http.post('/api/uploadtxt/'+ id, data);
+        };
+
         return {
             updateProject : updateProject,
             deleteProject : deleteProject,
             setID : setID,
-            getID : getID
+            getID : getID,
+            uploadTextFile : uploadTextFile
         };
 
     }

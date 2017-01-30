@@ -67,11 +67,11 @@ module.exports.createProject = function(req, res){
     }
     var exec = require('child_process').exec;
     function puts(error, stdout, stderr) { if(error){ console.log(error)}else{console.log(stdout)} };
-    exec("cd projectData && mkdir "+req.body.projectName+"", puts);
-    exec("cd projectData/"+req.body.projectName+" && mkdir rScripts", puts);
-    exec("cd projectData/"+req.body.projectName+" && mkdir txtFiles", puts);
-    exec("cd projectData/"+req.body.projectName+" && mkdir geoTiffs", puts);
-    project.filePath.push("projectData", "projectData/"+req.body.projectName, "projectData/"+req.body.projectName+"/rScripts", "projectData/"+req.body.projectName+"/txtFiles", "projectData/"+req.body.projectName+"/geoTiffs");
+    exec("cd projectData && mkdir "+req.body.uniqueKey+"", puts);
+    exec("cd projectData/"+req.body.uniqueKey+" && mkdir rScripts", puts);
+    exec("cd projectData/"+req.body.uniqueKey+" && mkdir txtFiles", puts);
+    exec("cd projectData/"+req.body.uniqueKey+" && mkdir geoTiffs", puts);
+    project.filePath.push("projectData", "projectData/"+req.body.uniqueKey, "projectData/"+req.body.uniqueKey+"/rScripts", "projectData/"+req.body.uniqueKey+"/txtFiles", "projectData/"+req.body.uniqueKey+"/geoTiffs");
 };
 
 module.exports.projectRead = function(req, res) {
@@ -93,8 +93,6 @@ module.exports.projectRead = function(req, res) {
             }
         });
         */
-
-    console.log(req.params.id);
 
     Project
         .findById(req.params.id, function(err, obj){
@@ -193,10 +191,10 @@ module.exports.projectDelete = function (req, res) {
                 }
                 var exec = require('child_process').exec;
                 function puts(error, stdout, stderr) { if(error){ console.log(error)}else{console.log(stdout)} };
-                exec("cd projectData/"+obj.projectName+" && rd geoTiffs", puts);
-                exec("cd projectData/"+obj.projectName+" && rd txtFiles", puts);
-                exec("cd projectData/"+obj.projectName+" && rd rScripts", puts);
-                exec("cd projectData && rd "+obj.projectName+"", puts);
+                exec("cd projectData/"+obj.uniqueKey+" && rd geoTiffs", puts);
+                exec("cd projectData/"+obj.uniqueKey+" && rd txtFiles", puts);
+                exec("cd projectData/"+obj.uniqueKey+" && rd rScripts", puts);
+                exec("cd projectData && rd "+obj.uniqueKey+"", puts);
                 obj.remove();
                 res.status(200).json("removed the project");
 
@@ -256,4 +254,14 @@ module.exports.projectDelete = function (req, res) {
      }
      });
      }*/
+};
+
+module.exports.uploadTxt = function (req, res) {
+
+    console.log("something");
+    var tempPath = req.files.file.path;
+    console.log(tempPath);
+    //console.log(req.body);
+    res.status(401).json("nope");
+    res.status(200).json(tempPath);
 };

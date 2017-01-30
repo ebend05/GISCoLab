@@ -21,12 +21,18 @@
             });
 
         $scope.uploadTextfile = function(){
-//funktioniert nicht, da ich keine ahnung habe, wie man dateien in einem ordner speichert
-        }
+            var txt = document.getElementById('tfile').files[0];
+            var fr = new FileReader();
+            fr.onloadend = function(e){
+                var data = e.target.result;
+                projectService.uploadTextFile(data, pid);
+            };
+            fr.readAsBinaryString(txt);
+        };
 
         $scope.uploadRscript = function(){
             // selbes Problem wie oben
-        }
+        };
 
         $scope.anFunction = function (id) {
             userService.setCollID(id);
