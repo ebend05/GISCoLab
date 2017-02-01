@@ -7,6 +7,8 @@ var User = mongoose.model('User');
 module.exports.createProject = function(req, res){
     var project = new Project();
 
+	var coll = req.body.collaborators;
+
     User.findOne({'userName': req.body.userName}, function (err, obj){
         if (err || obj.id === null || obj.id === undefined){
             console.log("something went wrong");
@@ -17,7 +19,6 @@ module.exports.createProject = function(req, res){
             project.ownerID = obj._id;
             project.info = req.body.info;
             project.dateCreated = Date.now();
-            project.collaborators = req.body.collaborators;
 
             project.save(function(err) {
                 res.status(200);
@@ -34,12 +35,15 @@ module.exports.createProject = function(req, res){
                     });
                 }, 50);
             });
-            var coll = req.body.collaborators;
+            console.log(coll[1]);
             for(var i = 0; i < coll.length; i++){
                 User.findOne({'email': coll[i]}, function (err, collabo){
                     if (err){
                         console.log("something went wrong");
+                    } else if (collabo === null) {
+                        console.log(coll[i] + " is not a registered user; collaborator was not added");
                     } else {
+                        project.collaborators.push(coll[i]);
                         collabo.coopProjects.push({projectName: project.projectName, projectID: project._id});
                         collabo.save(function(e){
                             if(e){
@@ -189,15 +193,22 @@ module.exports.projectDelete = function (req, res) {
                         }
                     });
                 }
+
                 var exec = require('child_process').exec;
                 function puts(error, stdout, stderr) { if(error){ console.log(error)}else{console.log(stdout)} };
-                exec("cd projectData/"+obj.uniqueKey+" && rd geoTiffs", puts);
+
+				/**
+				 * Geht kürzer!!
+				exec("cd projectData/"+obj.uniqueKey+" && rd geoTiffs", puts);
                 exec("cd projectData/"+obj.uniqueKey+" && rd txtFiles", puts);
                 exec("cd projectData/"+obj.uniqueKey+" && rd rScripts", puts);
                 exec("cd projectData && rd "+obj.uniqueKey+"", puts);
-                obj.remove();
-                res.status(200).json("removed the project");
+				 * rm -r löscht rekursiv sämtliche Unterstrukturen eines Directory's, und dann den Ordner selbst!
+				 */
+				exec("cd projectData && rm -r " +obj.uniqueKey +"", puts);
 
+				obj.remove();
+				res.status(200).json("removed the project");
                 /*
                 User
                     .findById(obj.ownerID, function (e, owner){
@@ -258,10 +269,10 @@ module.exports.projectDelete = function (req, res) {
 
 module.exports.uploadTxt = function (req, res) {
 
-    console.log("something");
-    var tempPath = req.files.file.path;
-    console.log(tempPath);
-    //console.log(req.body);
-    res.status(401).json("nope");
-    res.status(200).json(tempPath);
+	console.log("something");
+	var tempPath = req.files.file.path;
+	console.log(tempPath);
+	//console.log(req.body);
+	res.status(401).json("nope");
+	res.status(200).json(tempPath);
 };
