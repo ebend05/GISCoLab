@@ -12,3 +12,6 @@ app_client/bower_components
 
 #data
 data/
+
+#ProjektDaten
+projectData/
