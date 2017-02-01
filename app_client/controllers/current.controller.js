@@ -36,16 +36,32 @@
         var tree = new webix.ui({
             container:"treebox",
             view:"tree",
+            select:"true",
+            on: {"itemClick": function () {alert("item has just been clicked");}},
+            template:"{common.icon()} {common.folder()}<span onclick='treeData();'>#value#<span>",
             data: [
-                { id:"branch1", value: "vm.project.filePath[0]", data:[  //funktioniert nicht, da vm.project nur oben im block gefüllt ist und nicht global
+                { id:"branch1", value: "vm.project.filePath[0]", data:[
                     { id:"part1", value: "vm.project.filePath[1]", data:[
-                        {id:"files1", value: "vm.project.filePath[2]"},
+                        {id:"../views/about.view.html", value: "lalla"},
                         {id:"files2", value: "vm.project.filePath[3]"},
                         {id:"files3", value: "vm.project.filePath[4]"}
                     ] }
                 ]}
             ]
         });
+
+        treeData = function(){
+            var id = tree.getSelectedId();
+            console.log(id);
+            $.ajax({
+                type: "GET",
+                url: id,
+                data: id,
+                success: function (data) {
+                    $('#codearea').html(data);
+                }
+            })
+        }
 
         //'node' variable will contain an object of the related tree node
         //var node = tree.getItem('branch1');
