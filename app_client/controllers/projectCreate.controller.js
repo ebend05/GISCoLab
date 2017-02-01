@@ -20,7 +20,8 @@
 
         vm.onSubmit = function () {
             console.log("submitting project");
-            var colArray = vm.project.collaborators.split(', ');
+            var colArray = vm.project.collaborators;
+            colArray = colArray.replace(/^[, ]+|[, ]+$|[, ]+/g, " ").trim().split(' ');
             vm.project.collaborators = colArray;
             vm.project.uniqueKey = vm.project.userName + vm.project.projectName;
             authentication
