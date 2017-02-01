@@ -1,7 +1,7 @@
 <nav class="navbar navbar-custom navbar-static-top"> <!-- navbar -->
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" style="color:#000000" href="#">GISCoLab</a>
+            <a class="navbar-brand" style="color:#2D0264" href="#">GISCoLab</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -29,15 +29,15 @@
         <div class="container">
             <form method="post" ng-submit="vm.onSubmit()">
                 <div class="form-group">
-                    <label  for="projectName">Project name</label>
+                    <label  for="projectName">Project Name</label>
                     <input type="text" id="projectName" class="form-control" ng-model="vm.project.projectName" required />
                 </div>
                 <div class="form-group">
-                    <label for="email">kollaborierende Personen</label>
+                    <label for="email">Collaborative Persons</label>
                     <input type="text" data-role="tagsinput" id="email" class="form-control" ng-model="vm.project.collaborators"/>
                 </div>
                 <div class="form-group">
-                    <label for="userName">Username</label>
+                    <label for="userName">Your Username</label>
                     <input type="text" id="userName" class="form-control" ng-model="vm.project.userName" required />
                 </div>
                 <div class="form-group">
@@ -45,7 +45,7 @@
                     <input type="text" id="info" class="form-control" ng-model="vm.project.info" required />
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success" style="width: 60%; margin-top: 1rem">Create!</button>
+                    <button type="submit" class="btn btn-primary" style="width: 60%; margin-top: 1rem">Create!</button>
                 </div>
             </form>
         </div>

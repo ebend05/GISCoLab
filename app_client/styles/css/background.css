@@ -1,13 +1,50 @@
-/*html {
-    background: url(../images/Welthintergrund.jpg) no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-*/
-
 body {
-    background-image: url("../images/fluss.jpeg");
+    background-image: url("../images/GISCoLab_Background_2.jpg");
     background-color: #cccccc;
+}
+
+
+
+.jumbotroncurrent {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    color: inherit;
+    background-color: #eee;
+}
+.jumbotroncurrent h1,
+.jumbotroncurrent .h1 {
+    color: inherit;
+}
+.jumbotroncurrent p {
+    font-size: 21px;
+    font-weight: 200;
+}
+.jumbotroncurrent > hr {
+    border-top-color: #d5d5d5;
+}
+.container .jumbotroncurrent,
+.container-fluid .jumbotroncurrent {
+    padding-right: 15px;
+    padding-left: 15px;
+    border-radius: 6px;
+}
+.jumbotroncurrent .container {
+    max-width: 100%;
+}
+@media screen and (min-width: 768px) {
+    .jumbotroncurrent {
+        padding-top: 48px;
+        padding-bottom: 48px;
+    }
+
+    .container .jumbotroncurrent,
+    .container-fluid .jumbotroncurrent {
+        padding-right: 60px;
+        padding-left: 60px;
+    }
+
+    .jumbotroncurrent h1,
+    .jumbotroncurrent .h1 {
+        font-size: 63px;
+    }
 }
