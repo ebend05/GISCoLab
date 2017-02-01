@@ -20,22 +20,38 @@ module.exports.createProject = function(req, res){
             project.info = req.body.info;
             project.dateCreated = Date.now();
 
-            project.save(function(err) {
-                res.status(200);
-                res.json({
-                    "status": "everything worked fine"
-                });
-                setTimeout( function ()
-                {
-                    obj.ownProjects.push({projectName: req.body.projectName, projectID: project._id});
-                    obj.save(function(error){
-                        if(error){
-                            console.log("something went wrong");
-                        }
-                    });
-                }, 50);
-            });
-            console.log(coll[1]);
+			for(var zaehl = 0; zaehl < coll.length; zaehl++){
+				console.log(coll[zaehl]);
+				User.findOne({'email': coll[zaehl]}, {'email': 1}, function (err, collabo) {
+					if (err) {
+						console.log("something went wrong");
+					} else if (collabo === null) {
+						console.log("Passed email address is not a registered user; collaborator was not added");
+					} else {
+						console.log(collabo);
+						project.collaborators.push(collabo.email);
+					}
+				});
+			}
+
+            setTimeout( function () {
+				project.save(function(err) {
+					res.status(200);
+					res.json({
+						"status": "everything worked fine"
+					});
+					setTimeout( function ()
+					{
+						obj.ownProjects.push({projectName: req.body.projectName, projectID: project._id});
+						obj.save(function(error){
+							if(error){
+								console.log("something went wrong");
+							}
+						});
+					}, 50);
+				});
+			}, 50);
+
             for(var i = 0; i < coll.length; i++){
                 User.findOne({'email': coll[i]}, function (err, collabo){
                     if (err){
@@ -43,7 +59,6 @@ module.exports.createProject = function(req, res){
                     } else if (collabo === null) {
                         console.log(coll[i] + " is not a registered user; collaborator was not added");
                     } else {
-                        project.collaborators.push(coll[i]);
                         collabo.coopProjects.push({projectName: project.projectName, projectID: project._id});
                         collabo.save(function(e){
                             if(e){
