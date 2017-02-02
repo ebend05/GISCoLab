@@ -1,6 +1,6 @@
 (function () {
 
-  angular.module('giscolab', ['ngRoute', 'ui-leaflet']);
+  angular.module('giscolab', ['ngRoute']);
 
   function config ($routeProvider, $locationProvider) {
     $routeProvider
