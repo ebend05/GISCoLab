@@ -1,11 +1,11 @@
 (function() {
 
     angular
-        .module('giscolab', ['ngFileUpload'])
+        .module('giscolab'/*, ['ngFileUpload']*/)
         .controller('projectActiveCtrl', projectActiveCtrl);
 
-    projectActiveCtrl.$inject = ['$location', 'meanData', 'userService', '$scope', 'projectService', 'Upload', '$window'];
-    function projectActiveCtrl($location, meanData, userService, $scope, projectService, Upload, $window) {
+    projectActiveCtrl.$inject = ['$location', 'meanData', 'userService', '$scope', 'projectService'/*, 'Upload', '$window'*/];
+    function projectActiveCtrl($location, meanData, userService, $scope, projectService/*, Upload, $window*/) {
         var vm = this;
 
         vm.project = {};

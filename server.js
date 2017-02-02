@@ -101,7 +101,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-
+/*
 app.use(function(req, res, next){ //allow cross origin requests
     res.setHeader("Acces-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
     res.header("Acces-Control-Allow-Origin", "http://localhost");
@@ -132,6 +132,6 @@ app.post('/upload', function (req, res) {
         }
         res.json({error_code:0,err_desc:null});
     })
-});
+});*/
 
 module.exports = app;
