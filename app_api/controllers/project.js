@@ -90,7 +90,8 @@ module.exports.createProject = function(req, res){
     exec("cd projectData/"+req.body.uniqueKey+" && mkdir rScripts", puts);
     exec("cd projectData/"+req.body.uniqueKey+" && mkdir txtFiles", puts);
     exec("cd projectData/"+req.body.uniqueKey+" && mkdir geoTiffs", puts);
-    project.filePath.push("projectData", "projectData/"+req.body.uniqueKey, "projectData/"+req.body.uniqueKey+"/rScripts", "projectData/"+req.body.uniqueKey+"/txtFiles", "projectData/"+req.body.uniqueKey+"/geoTiffs");
+    exec("cd projectData/"+req.body.uniqueKey+" && type NUL > data.json", puts);
+    project.filePath.push("projectData", "projectData/"+req.body.uniqueKey, "projectData/"+req.body.uniqueKey+"/rScripts", "projectData/"+req.body.uniqueKey+"/txtFiles", "projectData/"+req.body.uniqueKey+"/geoTiffs", "projectData/"+req.body.uniqueKey+"/data.json");
 };
 
 module.exports.projectRead = function(req, res) {
