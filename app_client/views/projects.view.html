@@ -30,12 +30,17 @@
             <div class="col-xs-2"> <!-- Dropdown zu deinen Projekten -->
                 <div class="btn-group">
                     <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Own projects<span class="caret"></span></button>
-                    <ul class="dropdown-costum dropdown-menu">
-                        <li><a href="/projectCreate">New project</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/projectActive">provisorischer Link zum aktuellen Projekt</a></li>
-                        <li><a href="#">Another Project</a></li>
-                    </ul>
+                    <table class="dropdown-costum dropdown-menu" ng-repeat="ownProject in vm.user.ownProjects">
+                        <tr>
+                        <td><a href="/projectCreate">New project</a></td>
+                        </tr>
+                        <tr>
+                        <td><a href="/projectActive">active project</a></td>
+                        </tr>
+                        <tr ng-repeat="ownProject in vm.user.ownProjects">
+                            <td><a ng-click="myFunction(ownProject.projectID)">{{ownProject.projectName}}</a></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
             <div class="col-xs-2"> <!-- Dropdown zu kollaborierende Projekte -->
