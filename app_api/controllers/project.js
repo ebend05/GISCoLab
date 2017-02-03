@@ -1,6 +1,10 @@
 var mongoose = require('mongoose');
 var Project = mongoose.model('Project');
 var User = mongoose.model('User');
+var bodyParser = require("body-parser");
+var fs = require('fs');
+var formidable = require('formidable');
+var path = require('path');
 
 //var _ = require( 'lodash' );
 
@@ -283,12 +287,37 @@ module.exports.projectDelete = function (req, res) {
      }*/
 };
 
-module.exports.uploadTxt = function (req, res) {
+module.exports.uploadFile = function(req, res) {
 
-	console.log("something");
-	var tempPath = req.files.file.path;
-	console.log(tempPath);
-	//console.log(req.body);
-	res.status(401).json("nope");
-	res.status(200).json(tempPath);
-};
+    var form = new formidable.IncomingForm();
+
+    form.multiples = false;
+
+    form.uploadDir = path.join(__dirname, '../../projectData');
+
+    console.log(path.join(__dirname, '../../projectData'));
+
+// every time a file has been uploaded successfully,
+// rename it to it's orignal name
+    form.on('file', function (field, file) {
+        if(file.type === 'text/plain'){
+            fs.rename(file.path, path.join(form.uploadDir+'/'+req.params.key+'/txtFiles', file.name));
+        }
+        if(file.type === 'application/octet-stream'){
+            fs.rename(file.path, path.join(form.uploadDir+'/'+req.params.key+'/rScripts', file.name));
+        }
+    });
+
+// log any errors that occur
+    form.on('error', function (err) {
+        console.log('An error has occured: \n' + err);
+    });
+
+// once all the files have been uploaded, send a response to the client
+    form.on('end', function () {
+        res.end('success');
+    });
+
+// parse the incoming request containing the form data
+    form.parse(req);
+}
