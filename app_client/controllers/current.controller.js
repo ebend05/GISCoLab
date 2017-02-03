@@ -8,11 +8,11 @@
     function currentCtrl($location, meanData, userService, $scope, leafletDrawEvents, projectService) {
         console.log("current Controller is running!!!");
 
-     //   var vm = this;
+       var vm = this;
 
         /* start leaflet */
         var drawnItems = new L.FeatureGroup();
-        angular.extend(this, {
+        angular.extend(vm, {
             center: {
                 lat: 51.964711,
                 lng: 7.628496,
@@ -96,14 +96,14 @@
             });
         });
 
-        this.project = {};
+        vm.project = {};
 
         var pid = projectService.getID();
 
         if(pid !== undefined) {
             meanData.getProject(pid)
                 .success(function (data) {
-                    this.project = data;
+                    vm.project = data;
                 })
                 .error(function (e) {
                     console.log(e);
@@ -112,7 +112,7 @@
             alert("kein Projekt ausgewählt. Bitte erst eins auswählen!");
         };
 
-        console.log(this.project);
+        console.log(vm.project);
 
         //*****************************************************************************************************
         //*****************************************************************************************************

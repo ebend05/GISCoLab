@@ -54,11 +54,10 @@
                 <textarea id="codearea" style="height: 85%; width: 100%" ng-hide="treeview"></textarea>
                 <div ng-show="treeview" id="treebox" style="width: 100%; height:80%;"></div>
             </div>
-                <div style="height: 100%" class="col-xs-9" id="map">
-
+                <div style="height: 100%" class="col-xs-9">
+                    <leaflet lf-draw="vm.drawOptions" lf-center="vm.center" marker="vm.markers" layers="vm.layers" height="100%" width="100%"></leaflet>
                 </div>
         </div>
-    <leaflet lf-draw="vm.drawOptions" lf-center="vm.center" marker="vm.markers" layers="vm.layers" height="480px" width="640px"></leaflet>
 </div>
 
 
