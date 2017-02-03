@@ -60,13 +60,19 @@
 
         var handle = {
             created: function(e,leafletEvent, leafletObject, model, modelName) {
-                drawnItems.addLayer(leafletEvent.layer);
+
+                var layerJSON = leafletEvent.layer.toGeoJSON();
+                console.log(layerJSON);
+
+                drawnItems.addLayer(leafletEvent.layer.bindPopup(
+                    "top left corner: " + layerJSON.geometry.coordinates["0"]["0"].toString() +"\n" +
+                    "top right corner: " + layerJSON.geometry.coordinates["0"]["1"].toString() +"\n" +
+                    "bottom left corner: " + layerJSON.geometry.coordinates["0"]["2"].toString() +"\n" +
+                    "bottom right corner: " + layerJSON.geometry.coordinates["0"]["3"].toString()
+                    )
+                );
             },
-            edited: function(arg) {
-                /*$scope.$on('leafletObject.click', function (e, wrap) {
-                    alert("Lat, Lon : " + wrap.leafletEvent.latlng.lat + ", " + wrap.leafletEvent.latlng.lng)
-                });*/
-            },
+            edited: function(arg) {},
             deleted: function(arg) {
                 var layers;
                 layers = arg.layers;
