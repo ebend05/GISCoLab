@@ -62,6 +62,8 @@
                     <input name="textDatei" id="file-input" name="file-upload" type="file">
                     <button id="uploadButton">Upload</button>
                 </form>
+                <p>Download The Whole Project</p>
+                <button ng-click="download(vm.project.uniqueKey)">Download</button>
             </div>
                 <div style="height: 100%" class="col-xs-9">
                     <leaflet lf-draw="vm.drawOptions" lf-center="vm.center" marker="vm.markers" layers="vm.layers" height="100%" width="100%"></leaflet>

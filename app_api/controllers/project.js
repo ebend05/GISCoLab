@@ -5,6 +5,7 @@ var bodyParser = require("body-parser");
 var fs = require('fs');
 var formidable = require('formidable');
 var path = require('path');
+var archiver = require('archiver');
 
 //var _ = require( 'lodash' );
 
@@ -322,4 +323,30 @@ module.exports.uploadFile = function(req, res) {
 
 // parse the incoming request containing the form data
     form.parse(req);
-}
+};
+
+module.exports.downloadZip = function(req, res){
+
+    var output = fs.createWriteStream(__dirname + '/'+req.params.key+'.zip');
+    var archive = archiver('zip', {
+        store: false // Sets the compression method to STORE.
+    });
+
+    archive.directory('projectData/'+req.params.key+'/');
+
+    archive.on('close', function() {
+        console.log(archive.pointer() + ' total bytes');
+        console.log('archiver has been finalized and the output file descriptor has closed.');
+        res.status(200).send('okay').end();
+    });
+
+    res.attachment(req.params.key+'.zip');
+
+    archive.on('error', function(err) {
+        if(err) {
+            res.status(400).json("could not zip the file");
+        }
+    });
+
+    archive.finalize();
+};

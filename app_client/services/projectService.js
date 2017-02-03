@@ -31,11 +31,16 @@
             return proID;
         };
 
+        function downloadZip(key){
+          return $http.get('/api/download/'+key);
+        };
+
         return {
             updateProject : updateProject,
             deleteProject : deleteProject,
             setID : setID,
-            getID : getID
+            getID : getID,
+            downloadZip: downloadZip
         };
 
     }

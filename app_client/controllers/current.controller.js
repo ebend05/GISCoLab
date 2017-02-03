@@ -112,7 +112,21 @@
             alert("kein Projekt ausgewählt. Bitte erst eins auswählen!");
         };
 
-        console.log(vm.project);
+        $scope.download = function(key){
+            projectService.downloadZip(key)
+            .success(function(data, status, headers, config){
+                var anchor = angular.element('<a/>');
+                console.log(data);
+                anchor.attr({
+                    href: 'data:attachment' + encodeURI(data),
+                    target: '_blank',
+                    download: key+'.zip'
+                })[0].click();
+            })
+                .error(function(data, status, headers, config){
+                    console.log("something");
+                });
+        };
 
         //*****************************************************************************************************
         //*****************************************************************************************************
