@@ -92,11 +92,36 @@ module.exports.createProject = function(req, res){
     var exec = require('child_process').exec;
     function puts(error, stdout, stderr) { if(error){ console.log(error)}else{console.log(stdout)} };
     exec("cd projectData && mkdir "+req.body.uniqueKey+"", puts);
-    exec("cd projectData/"+req.body.uniqueKey+" && mkdir rScripts", puts);
-    exec("cd projectData/"+req.body.uniqueKey+" && mkdir txtFiles", puts);
-    exec("cd projectData/"+req.body.uniqueKey+" && mkdir geoTiffs", puts);
-    exec("cd projectData/"+req.body.uniqueKey+" && type NUL > data.json", puts);
-    project.filePath.push("projectData", "projectData/"+req.body.uniqueKey, "projectData/"+req.body.uniqueKey+"/rScripts", "projectData/"+req.body.uniqueKey+"/txtFiles", "projectData/"+req.body.uniqueKey+"/geoTiffs", "projectData/"+req.body.uniqueKey+"/data.json");
+    setTimeout(function () {
+        exec("cd projectData/"+req.body.uniqueKey+" && mkdir rScripts", puts);
+        exec("cd projectData/"+req.body.uniqueKey+" && mkdir txtFiles", puts);
+        exec("cd projectData/"+req.body.uniqueKey+" && mkdir geoTiffs", puts);
+        exec("cd projectData/"+req.body.uniqueKey+" && echo {} > data.json", puts);
+        project.filePath.push("projectData", "projectData/"+req.body.uniqueKey, "projectData/"+req.body.uniqueKey+"/rScripts", "projectData/"+req.body.uniqueKey+"/txtFiles", "projectData/"+req.body.uniqueKey+"/geoTiffs", "projectData/"+req.body.uniqueKey+"/data.json");
+
+    }, 40);
+
+    setTimeout(function () {
+        fs.readFile('projectData/' + req.body.uniqueKey + '/data.json', function (err, data) {
+            if (err) throw err;
+            var newData = JSON.parse(data);
+            newData.id = '"../../projectData/vm.uniqueKey/rScripts/", value: "rScripts", data: []';
+            newData = JSON.stringify(newData);
+
+            var fileName = path.join(__dirname, '../../projectData/' + req.body.uniqueKey + '/data') + '.json';
+
+            fs.writeFile(fileName, newData, function(err) {
+                if (err) {
+                    console.error('Something when wrong when saving the temp file' + err);
+                    res.send('Something when wrong when saving the temp file');
+                }
+            });
+
+        });
+    }, 120);
+
+
+
 };
 
 module.exports.projectRead = function(req, res) {
