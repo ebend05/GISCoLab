@@ -293,12 +293,14 @@ module.exports.uploadFile = function(req, res) {
 
     form.multiples = false;
 
+    // TODO: Abfrage ob Dateiendung r oder txt ist und dann Error werfen, damit kein Datenmüll hochgeladen wird
+
     form.uploadDir = path.join(__dirname, '../../projectData');
 
     console.log(path.join(__dirname, '../../projectData'));
 
 // every time a file has been uploaded successfully,
-// rename it to it's orignal name
+// rename it to it's original name
     form.on('file', function (field, file) {
         if(file.type === 'text/plain'){
             fs.rename(file.path, path.join(form.uploadDir+'/'+req.params.key+'/txtFiles', file.name));
