@@ -91,7 +91,9 @@ module.exports.createProject = function(req, res){
     }
     var exec = require('child_process').exec;
     function puts(error, stdout, stderr) { if(error){ console.log(error)}else{console.log(stdout)} };
-	var projDirName = req.body.uniqueKey.replace(/(\s)/g, "\\ ");
+	var projDirName = req.body.uniqueKey;
+	projDirName = projDirName.replace(/(\s)/g, "__");
+	console.log(projDirName);
     exec("cd projectData && mkdir "+projDirName+"", puts);
     setTimeout(function () {
         exec("cd projectData/"+projDirName+" && mkdir rScripts", puts);
@@ -104,6 +106,7 @@ module.exports.createProject = function(req, res){
     }, 40);
 
     setTimeout(function () {
+		console.log("read datatxt.json");
         fs.readFile('projectData/' + req.body.uniqueKey + '/datatxt.json', function (err, data) {
             if (err) throw err;
             var newData = JSON.parse(data);
@@ -114,7 +117,7 @@ module.exports.createProject = function(req, res){
             newData = JSON.stringify(newData);
             console.log(newData);
 
-            var fileName = path.join(__dirname, '../../projectData/' + req.body.uniqueKey + '/datatxt') + '.json';
+            var fileName = path.join(__dirname, '../../projectData/' + projDirName + '/datatxt') + '.json';
 
             fs.writeFile(fileName, newData, function(err) {
                 if (err) {
@@ -127,17 +130,18 @@ module.exports.createProject = function(req, res){
     }, 120);
 
     setTimeout(function () {
-        fs.readFile('projectData/' + req.body.uniqueKey + '/datarScripts.json', function (err, data) {
+		console.log("read datarScripts.json");
+        fs.readFile('projectData/' + projDirName + '/datarScripts.json', function (err, data) {
             if (err) throw err;
             var newData = JSON.parse(data);
-            newData.id = "../../projectData/" + req.body.uniqueKey + "/rScripts/";
+            newData.id = "../../projectData/" + projDirName + "/rScripts/";
             newData.value = "rScripts";
             newData.data = [];
             console.log(newData);
             newData = JSON.stringify(newData);
             console.log(newData);
 
-            var fileName = path.join(__dirname, '../../projectData/' + req.body.uniqueKey + '/datarScripts') + '.json';
+            var fileName = path.join(__dirname, '../../projectData/' + projDirName + '/datarScripts') + '.json';
 
             fs.writeFile(fileName, newData, function(err) {
                 if (err) {
@@ -280,7 +284,8 @@ module.exports.projectDelete = function (req, res) {
                 exec("cd projectData && rd "+obj.uniqueKey+"", puts);
 				 * rm -r löscht rekursiv sämtliche Unterstrukturen eines Directory's, und dann den Ordner selbst!
 				 */
-				exec("cd projectData && rm -r " +obj.uniqueKey +"", puts);
+				var projDirName = obj.uniqueKey.replace(/(\s)/g, "__");
+				exec("cd projectData && rm -r " +projDirName +"", puts);
 
 				obj.remove();
 				res.status(200).json("removed the project");
@@ -354,20 +359,21 @@ module.exports.uploadFile = function(req, res) {
 
     console.log(path.join(__dirname, '../../projectData'));
 
+	var projDirName = req.params.key.replace(/(\s)/g, "__");
 // every time a file has been uploaded successfully,
 // rename it to it's original name
     form.on('file', function (field, file) {
         if(file.type === 'text/plain'){
-            fs.rename(file.path, path.join(form.uploadDir+'/'+req.params.key+'/txtFiles', file.name));
+            fs.rename(file.path, path.join(form.uploadDir+'/'+projDirName+'/txtFiles', file.name));
 
-            fs.readFile('projectData/' + req.params.key + '/datatxt.json', function (err, jsondata) {
+            fs.readFile('projectData/' + projDirName + '/datatxt.json', function (err, jsondata) {
                 if (err) throw err;
                 var newData = JSON.parse(jsondata);
-                newData.data.push({"id": "../../projectData/" + req.params.key + "/txtFiles/" + file.name , "value": file.name});
+                newData.data.push({id: "../../projectData/" + projDirName + "/txtFiles/" + file.name , value: file.name});
                 newData = JSON.stringify(newData);
                 console.log(JSON.parse(newData))
 
-                var fileName = path.join(__dirname, '../../projectData/' + req.params.key + '/datatxt') + '.json';
+                var fileName = path.join(__dirname, '../../projectData/' + projDirName + '/datatxt') + '.json';
 
                 fs.writeFile(fileName, newData, function(err) {
                     if (err) {
@@ -379,15 +385,15 @@ module.exports.uploadFile = function(req, res) {
             });
         }
         if(file.type === 'application/octet-stream'){
-            fs.rename(file.path, path.join(form.uploadDir+'/'+req.params.key+'/rScripts', file.name));
+            fs.rename(file.path, path.join(form.uploadDir+'/'+projDirName+'/rScripts', file.name));
 
-            fs.readFile('projectData/' + req.params.key + '/datarScripts.json', function (err, data) {
+            fs.readFile('projectData/' + projDirName + '/datarScripts.json', function (err, data) {
                 if (err) throw err;
                 var newData = JSON.parse(data);
-                newData.data.push({"id": "../../projectData/" + req.params.key + "/rScripts/" + file.name , "value": file.name});
+                newData.data.push({id: "../../projectData/" + projDirName + "/rScripts/" + file.name , value: file.name});
                 newData = JSON.stringify(newData);
 
-                var fileName = path.join(__dirname, '../../projectData/' + req.params.key + '/datarScripts') + '.json';
+                var fileName = path.join(__dirname, '../../projectData/' + projDirName + '/datarScripts') + '.json';
 
                 fs.writeFile(fileName, newData, function (err) {
                     if (err) {

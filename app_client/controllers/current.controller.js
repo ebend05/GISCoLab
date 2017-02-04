@@ -3,7 +3,7 @@
     angular
         .module('giscolab')
         .controller('currentCtrl', currentCtrl);
-
+    var proKey;
     currentCtrl.$inject = ['$location', 'meanData', 'userService', '$scope', 'leafletDrawEvents', 'projectService'];
     function currentCtrl($location, meanData, userService, $scope, leafletDrawEvents, projectService) {
         console.log("current Controller is running!!!");
@@ -104,6 +104,33 @@
             meanData.getProject(pid)
                 .success(function (data) {
                     vm.project = data;
+                    proKey = vm.project.uniqueKey;
+                    //*****************************************************************************************************
+                    //*****************************************************************************************************
+                    //*****************************************************************************************************
+                    // Treeview
+
+                    var tree = new webix.ui({
+                        container:"treebox",
+                        view:"tree",
+                        select:"true",
+                        url: "../../projectData/" + proKey + "/datatxt.json",
+                        on: {"itemClick": function () {alert("item has just been clicked");}},
+                        template:"{common.icon()} {common.folder()}<span onclick='treeData();'>#value#<span>"
+                    });
+
+                    treeData = function(){
+                        var id = tree.getSelectedId();
+                        console.log(id);
+                        $.ajax({
+                            type: "GET",
+                            url: id,
+                            data: id,
+                            success: function (data) {
+                                $('#codearea').html(data);
+                            }
+                        })
+                    };
                 })
                 .error(function (e) {
                     console.log(e);
@@ -125,37 +152,11 @@
             })
                 .error(function(data, status, headers, config){
                     console.log("something");
+                    alert("Download failed! \n Sorry about that.")
                 });
         };
 
-        //*****************************************************************************************************
-        //*****************************************************************************************************
-        //*****************************************************************************************************
-        // Treeview
 
-
-        var tree = new webix.ui({
-            container:"treebox",
-            view:"tree",
-            select:"true",
-            // url: "../../projectData/datatxt.json",
-            on: {"itemClick": function () {alert("item has just been clicked");}},
-            template:"{common.icon()} {common.folder()}<span onclick='treeData();'>#value#<span>",
-            data: []
-        });
-
-        treeData = function(){
-            var id = tree.getSelectedId();
-            console.log(id);
-            $.ajax({
-                type: "GET",
-                url: id,
-                data: id,
-                success: function (data) {
-                    $('#codearea').html(data);
-                }
-            })
-        }
 
         //'node' variable will contain an object of the related tree node
         //var node = tree.getItem('branch1');
