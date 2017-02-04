@@ -421,7 +421,10 @@ module.exports.uploadFile = function(req, res) {
 
 module.exports.downloadZip = function(req, res){
 
-    var output = fs.createWriteStream(__dirname + '/'+req.params.key+'.zip');
+    var exec = require('child_process').exec;
+    function puts(error, stdout, stderr) { if(error){ console.log(error)}else{console.log(stdout)} };
+
+    var output = fs.createWriteStream('projectData/'+req.params.key+'.zip');
     var archive = archiver('zip', {
         store: false // Sets the compression method to STORE.
     });
@@ -431,10 +434,11 @@ module.exports.downloadZip = function(req, res){
     archive.on('close', function() {
         console.log(archive.pointer() + ' total bytes');
         console.log('archiver has been finalized and the output file descriptor has closed.');
-        res.status(200).send('okay').end();
+        exec('cd projectData && chmod 777 '+req.params.key+'.zip', puts);
+        res.status(200).sendfile('projectData/'+req.params.key+'.zip');
     });
 
-    res.attachment(req.params.key+'.zip');
+    //res.attachment(req.params.key+'.zip');
 
     archive.on('error', function(err) {
         if(err) {
@@ -443,4 +447,8 @@ module.exports.downloadZip = function(req, res){
     });
 
     archive.finalize();
+
+    setTimeout( function(){
+        exec("cd projectData && del "+req.params.key+".zip", puts);
+    }, 100);
 };
