@@ -103,7 +103,6 @@
         if(pid !== undefined) {
             meanData.getProject(pid)
                 .success(function (data) {
-                    vm.project = data;
                 })
                 .error(function (e) {
                     console.log(e);
@@ -133,21 +132,14 @@
         //*****************************************************************************************************
         // Treeview
 
+
         var tree = new webix.ui({
             container:"treebox",
             view:"tree",
             select:"true",
+            url: "../../projectData/" +  + "datatxt.json",
             on: {"itemClick": function () {alert("item has just been clicked");}},
             template:"{common.icon()} {common.folder()}<span onclick='treeData();'>#value#<span>",
-            data: [
-                { id:"branch1", value: "vm.project.filePath[0]", data:[
-                    { id:"part1", value: "vm.project.filePath[1]", data:[
-                        {id:"../views/about.view.html", value: "lalla"},
-                        {id:"files2", value: "vm.project.filePath[3]"},
-                        {id:"files3", value: "vm.project.filePath[4]"}
-                    ] }
-                ]}
-            ]
         });
 
         treeData = function(){

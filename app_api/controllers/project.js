@@ -96,19 +96,47 @@ module.exports.createProject = function(req, res){
         exec("cd projectData/"+req.body.uniqueKey+" && mkdir rScripts", puts);
         exec("cd projectData/"+req.body.uniqueKey+" && mkdir txtFiles", puts);
         exec("cd projectData/"+req.body.uniqueKey+" && mkdir geoTiffs", puts);
-        exec("cd projectData/"+req.body.uniqueKey+" && echo {} > data.json", puts);
-        project.filePath.push("projectData", "projectData/"+req.body.uniqueKey, "projectData/"+req.body.uniqueKey+"/rScripts", "projectData/"+req.body.uniqueKey+"/txtFiles", "projectData/"+req.body.uniqueKey+"/geoTiffs", "projectData/"+req.body.uniqueKey+"/data.json");
+        exec("cd projectData/"+req.body.uniqueKey+" && echo {} > datatxt.json", puts);
+        exec("cd projectData/"+req.body.uniqueKey+" && echo {} > datarScripts.json", puts);
+        project.filePath.push("projectData", "projectData/"+req.body.uniqueKey, "projectData/"+req.body.uniqueKey+"/rScripts", "projectData/"+req.body.uniqueKey+"/txtFiles", "projectData/"+req.body.uniqueKey+"/geoTiffs", "projectData/"+req.body.uniqueKey+"/datatxt.json", "projectData/"+req.body.uniqueKey+"/datarScript.json");
 
     }, 40);
 
     setTimeout(function () {
-        fs.readFile('projectData/' + req.body.uniqueKey + '/data.json', function (err, data) {
+        fs.readFile('projectData/' + req.body.uniqueKey + '/datatxt.json', function (err, data) {
             if (err) throw err;
             var newData = JSON.parse(data);
-            newData.id = '"../../projectData/vm.uniqueKey/rScripts/", value: "rScripts", data: []';
+            newData.id = "../../projectData/" + req.body.uniqueKey + "/txtFiles/";
+            newData.value = "txtFiles";
+            newData.data = [];
+            console.log(newData);
             newData = JSON.stringify(newData);
+            console.log(newData);
 
-            var fileName = path.join(__dirname, '../../projectData/' + req.body.uniqueKey + '/data') + '.json';
+            var fileName = path.join(__dirname, '../../projectData/' + req.body.uniqueKey + '/datatxt') + '.json';
+
+            fs.writeFile(fileName, newData, function(err) {
+                if (err) {
+                    console.error('Something when wrong when saving the temp file' + err);
+                    res.send('Something when wrong when saving the temp file');
+                }
+            });
+
+        });
+    }, 120);
+
+    setTimeout(function () {
+        fs.readFile('projectData/' + req.body.uniqueKey + '/datarScripts.json', function (err, data) {
+            if (err) throw err;
+            var newData = JSON.parse(data);
+            newData.id = "../../projectData/" + req.body.uniqueKey + "/rScripts/";
+            newData.value = "rScripts";
+            newData.data = [];
+            console.log(newData);
+            newData = JSON.stringify(newData);
+            console.log(newData);
+
+            var fileName = path.join(__dirname, '../../projectData/' + req.body.uniqueKey + '/datarScripts') + '.json';
 
             fs.writeFile(fileName, newData, function(err) {
                 if (err) {
@@ -330,9 +358,43 @@ module.exports.uploadFile = function(req, res) {
     form.on('file', function (field, file) {
         if(file.type === 'text/plain'){
             fs.rename(file.path, path.join(form.uploadDir+'/'+req.params.key+'/txtFiles', file.name));
+
+            fs.readFile('projectData/' + req.params.key + '/datatxt.json', function (err, jsondata) {
+                if (err) throw err;
+                var newData = JSON.parse(jsondata);
+                newData.data.push({"id": "../../projectData/" + req.params.key + "/txtFiles/" + file.name , "value": file.name});
+                newData = JSON.stringify(newData);
+                console.log(JSON.parse(newData))
+
+                var fileName = path.join(__dirname, '../../projectData/' + req.params.key + '/datatxt') + '.json';
+
+                fs.writeFile(fileName, newData, function(err) {
+                    if (err) {
+                        console.error('Something when wrong when saving the temp file' + err);
+                        res.send('Something when wrong when saving the temp file');
+                    }
+                });
+
+            });
         }
         if(file.type === 'application/octet-stream'){
             fs.rename(file.path, path.join(form.uploadDir+'/'+req.params.key+'/rScripts', file.name));
+
+            fs.readFile('projectData/' + req.params.key + '/datarScripts.json', function (err, data) {
+                if (err) throw err;
+                var newData = JSON.parse(data);
+                newData.data.push({"id": "../../projectData/" + req.params.key + "/rScripts/" + file.name , "value": file.name});
+                newData = JSON.stringify(newData);
+
+                var fileName = path.join(__dirname, '../../projectData/' + req.params.key + '/datarScripts') + '.json';
+
+                fs.writeFile(fileName, newData, function (err) {
+                    if (err) {
+                        console.error('Something when wrong when saving the temp file' + err);
+                        res.send('Something when wrong when saving the temp file');
+                    }
+                });
+            });
         }
     });
 
