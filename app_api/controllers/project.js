@@ -421,10 +421,18 @@ module.exports.uploadFile = function(req, res) {
 
 module.exports.downloadZip = function(req, res){
 
+<<<<<<< HEAD
     var exec = require('child_process').exec;
     function puts(error, stdout, stderr) { if(error){ console.log(error)}else{console.log(stdout)} };
 
     var output = fs.createWriteStream('projectData/'+req.params.key+'.zip');
+=======
+	var exec = require('child_process').exec;
+	function puts(error, stdout, stderr) { if(error){ console.log(error)}else{console.log(stdout)} };
+
+	var output = fs.createWriteStream('projectData/'+req.params.key+'.zip');
+
+>>>>>>> df2535113624a912bf2244b7b523193076492257
     var archive = archiver('zip', {
         store: false // Sets the compression method to STORE.
     });
@@ -434,11 +442,19 @@ module.exports.downloadZip = function(req, res){
     archive.on('close', function() {
         console.log(archive.pointer() + ' total bytes');
         console.log('archiver has been finalized and the output file descriptor has closed.');
+<<<<<<< HEAD
         exec('cd projectData && chmod 777 '+req.params.key+'.zip', puts);
         res.status(200).sendfile('projectData/'+req.params.key+'.zip');
     });
 
     //res.attachment(req.params.key+'.zip');
+=======
+		exec('cd projectData && chmod 777 '+req.params.key+'.zip', puts);
+		res.status(200).sendfile('projectData/'+req.params.key+'.zip');
+    });
+
+    // res.attachment(req.params.key+'.zip');
+>>>>>>> df2535113624a912bf2244b7b523193076492257
 
     archive.on('error', function(err) {
         if(err) {
@@ -446,9 +462,30 @@ module.exports.downloadZip = function(req, res){
         }
     });
 
+<<<<<<< HEAD
     archive.finalize();
 
     setTimeout( function(){
         exec("cd projectData && del "+req.params.key+".zip", puts);
     }, 100);
+=======
+	archive.finalize();
+	setTimeout( function(){
+		exec("cd projectData && del "+req.params.key+".zip", puts);
+	}, 100);
+};
+
+
+module.exports.saveRCode = function (req, res)
+{
+	console.log(req.body);
+	res.status(200).send("juuuhuuuu");
+};
+
+
+module.exports.runRCode = function (req, res)
+{
+	console.log(req.body);
+	res.status(200).send("juuuuhuuuuuu");
+>>>>>>> df2535113624a912bf2244b7b523193076492257
 };
