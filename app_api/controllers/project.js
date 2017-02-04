@@ -384,7 +384,7 @@ module.exports.uploadFile = function(req, res) {
 
             });
         }
-        if(file.type === 'application/octet-stream'){
+        if(file.type === 'text/x-r-source'){
             fs.rename(file.path, path.join(form.uploadDir+'/'+projDirName+'/rScripts', file.name));
 
             fs.readFile('projectData/' + projDirName + '/datarScripts.json', function (err, data) {
