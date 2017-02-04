@@ -103,6 +103,7 @@
         if(pid !== undefined) {
             meanData.getProject(pid)
                 .success(function (data) {
+                    vm.project = data;
                 })
                 .error(function (e) {
                     console.log(e);
@@ -137,9 +138,10 @@
             container:"treebox",
             view:"tree",
             select:"true",
-            url: "../../projectData/" +  + "datatxt.json",
+            // url: "../../projectData/datatxt.json",
             on: {"itemClick": function () {alert("item has just been clicked");}},
             template:"{common.icon()} {common.folder()}<span onclick='treeData();'>#value#<span>",
+            data: []
         });
 
         treeData = function(){
