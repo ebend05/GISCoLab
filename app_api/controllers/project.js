@@ -91,13 +91,14 @@ module.exports.createProject = function(req, res){
     }
     var exec = require('child_process').exec;
     function puts(error, stdout, stderr) { if(error){ console.log(error)}else{console.log(stdout)} };
-    exec("cd projectData && mkdir "+req.body.uniqueKey+"", puts);
+	var projDirName = req.body.uniqueKey.replace(/(\s)/g, "\\ ");
+    exec("cd projectData && mkdir "+projDirName+"", puts);
     setTimeout(function () {
-        exec("cd projectData/"+req.body.uniqueKey+" && mkdir rScripts", puts);
-        exec("cd projectData/"+req.body.uniqueKey+" && mkdir txtFiles", puts);
-        exec("cd projectData/"+req.body.uniqueKey+" && mkdir geoTiffs", puts);
-        exec("cd projectData/"+req.body.uniqueKey+" && echo {} > datatxt.json", puts);
-        exec("cd projectData/"+req.body.uniqueKey+" && echo {} > datarScripts.json", puts);
+        exec("cd projectData/"+projDirName+" && mkdir rScripts", puts);
+        exec("cd projectData/"+projDirName+" && mkdir txtFiles", puts);
+        exec("cd projectData/"+projDirName+" && mkdir geoTiffs", puts);
+        exec("cd projectData/"+projDirName+" && echo {} > datatxt.json", puts);
+        exec("cd projectData/"+projDirName+" && echo {} > datarScripts.json", puts);
         project.filePath.push("projectData", "projectData/"+req.body.uniqueKey, "projectData/"+req.body.uniqueKey+"/rScripts", "projectData/"+req.body.uniqueKey+"/txtFiles", "projectData/"+req.body.uniqueKey+"/geoTiffs", "projectData/"+req.body.uniqueKey+"/datatxt.json", "projectData/"+req.body.uniqueKey+"/datarScript.json");
 
     }, 40);
