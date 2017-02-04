@@ -1,30 +1,31 @@
-/*
-
-  There are some minor modifications to the default Express setup
-  Each is commented and marked with [SH] to make them easy to find
-
- */
-
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-// [SH] Require Passport
+//  Require Passport
 var passport = require('passport');
 var multer = require('multer');
+var schedule = require('node-schedule');
 
 //console.log(process.env.MY_SECRET);
 
-// [SH] Bring in the data model
+//  Bring in the data model
 require('./app_api/models/db');
-// [SH] Bring in the Passport config after model is defined
+//  Bring in the Passport config after model is defined
 require('./app_api/config/passport');
 
 
-// [SH] Bring in the routes for the API (delete the default routes)
+//  Bring in the routes for the API (delete the default routes)
 var routesApi = require('./app_api/routes/index');
+
+// exec starts a shell as child-process, param is shell cmd as String
+var exec = require('child_process').exec;
+
+exec("mkdir projectData userTemps");
+
+
 
 var app = express();
 
@@ -32,24 +33,22 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-//app.use(express.static(path.join(__dirname, 'public')));
-// [SH] Set the app_client folder to serve static resources
+
+//  Set the app_client folder to serve static resources
 app.use(express.static(path.join(__dirname, 'app_client')));
 
-// [SH] Initialise Passport before using the route middleware
+//  Initialise Passport before using the route middleware
 app.use(passport.initialize());
 
-// [SH] Use the API routes when path starts with /api
+//  Use the API routes when path starts with /api
 app.use('/api', routesApi);
 
-// [SH] Otherwise render the index.html page for the Angular SPA
-// [SH] This means we don't have to map all of the SPA routes in Express
+//  Otherwise render the index.html page for the Angular SPA
+//  This means we don't have to map all of the SPA routes in Express
 app.use(function(req, res) {
   res.sendFile(path.join(__dirname, 'app_client', 'index.html'));
 });
@@ -64,7 +63,7 @@ app.use(function(req, res, next) {
 
 // error handlers
 
-// [SH] Catch unauthorised errors
+//  Catch unauthorised errors
 app.use(function (err, req, res, next) {
   if (err.name === 'UnauthorizedError') {
     res.status(401);
@@ -101,37 +100,10 @@ app.use(function(req, res, next) {
     next();
 });
 
-/*
-app.use(function(req, res, next){ //allow cross origin requests
-    res.setHeader("Acces-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
-    res.header("Acces-Control-Allow-Origin", "http://localhost");
-    res.header("Acces-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
+// clear out temps directory every day at 3am
+var clearTemps = schedule.scheduleJob('0 0 3 0 0-6', function () {
+    exec("rm -r userTemps/*");
+    console.log(Date.now() +": cleared userTemps");
 });
-
-var storage = multer.diskStorage({  // multers disk storage settings
-    destination: function (req, file, cb) {
-        cb(null, 'projectData/')
-    },
-    filename: function (req, file, cb) {
-        var datetimestamp = Date.now();
-        cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
-    }
-})
-
-var upload = multer({ //multer settings
-    storage: storage
-}).single('file');
-
-// API path that will upload the files
-app.post('/upload', function (req, res) {
-    upload(req,res,function(err){
-        if(err){
-            res.json({error_code:1,err_desc:err});
-            return;
-        }
-        res.json({error_code:0,err_desc:null});
-    })
-});*/
 
 module.exports = app;
