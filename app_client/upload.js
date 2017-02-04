@@ -28,6 +28,7 @@ function uploadFile() {
     var formData = new FormData();
 
     var uniqueKey = document.getElementById('uniqueKey').value;
+    uniqueKey = uniqueKey.replace(/(\s)/g, "__");
 
     files = $('#file-input').get(0).files;
 
