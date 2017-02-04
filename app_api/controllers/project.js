@@ -107,10 +107,10 @@ module.exports.createProject = function(req, res){
 
     setTimeout(function () {
 		console.log("read datatxt.json");
-        fs.readFile('projectData/' + req.body.uniqueKey + '/datatxt.json', function (err, data) {
+        fs.readFile('projectData/' + projDirName + '/datatxt.json', function (err, data) {
             if (err) throw err;
             var newData = JSON.parse(data);
-            newData.id = "../../projectData/" + req.body.uniqueKey + "/txtFiles/";
+            newData.id = "../../projectData/" + projDirName + "/txtFiles/";
             newData.value = "txtFiles";
             newData.data = [];
             console.log(newData);
