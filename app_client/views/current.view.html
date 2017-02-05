@@ -31,9 +31,9 @@
 
 
 
-<div class="jumbotroncurrent" style="height: 100%">
-    <div style="height: 100%" class="row">
-            <div class="col-xs-3" style="height: 100%">
+<div class="container-fluid jumbotroncurrent" style="height: 100%">
+        <div style="height: 100%" class="row">
+            <div id="resizable" class="col-md-4" style="height: 100%">
                 <nav class="navbar navbar-custom navbar-static-top">
                     <div class="container">
                         <div id="navbarshort1" class="navbar-collapse collapse">
@@ -51,12 +51,38 @@
                         </div><!--/.nav-collapse -->
                     </div>
                 </nav>
-                <div ng-hide="treeview" style="height: 85%; width: 100%">
-                    <textarea id="fileName" style="height: 5%; width: 100%" placeholder="File Name"></textarea>
+                <div ng-hide="treeview" style="height: 85%; width: 100%; overflow: auto;">
+                    <textarea id="fileName" style="height: 7%; width: 100%" placeholder="File Name"></textarea>
                     <textarea id="packages" style="height: 10%; width: 100%" placeholder="Install packages here"></textarea>
-                    <textarea id="codearea" style="height: 75%; width: 100%" placeholder="Your R Code here"></textarea>
+                    <textarea id="codearea" style="height: 68%; width: 100%" placeholder="Your R Code here"></textarea>
+
+                    <input type="button" value="Add Row" onclick="addRow('dataTable')" />
+                    <input type="button" value="Delete Row" onclick="deleteRow('dataTable')" />
+                    <p style="font-size: 12px;">Data from this table is only required to RUN code, it will not be saved! <br>
+                        Checkbox is only used for row deletion. All rows will be passed to Code Runner. <br>
+                        If only one value of a row is missing, the row will be ignored!</p>
+                    <table id="dataTable" class="table table-bordered" width="100%" border="1">
+                        <thead>
+                            <th style="height: 12px; width: 10%"></th>
+                            <th style="height: 12px; width: 30%">Output of your code</th>
+                            <th style="height: 12px; width: 10%">Spectr. Band</th>
+                            <th style="height: 12px; width: 30%">New layer name</th>
+                            <th style="height: 12px; width: 10%">Min</th>
+                            <th style="height: 12px; width: 10%">Max</th>
+                        </thead>
+                        <tr>
+                            <td><input type="checkbox" style="height: 12px" name="chk"/></td>
+                            <td><input type="text" name="outputName" style="height: 12px" placeholder="Exact name of your sciDB-output"/></td>
+                            <td><input type="text" name="bands" style="height: 12px" placeholder="Spectr. band num."></td>
+                            <td><input type="text" name="layername" style="height: 12px" placeholder="Name of your new Layer"></td>
+                            <td><input type="text" name="min" style="height: 12px" placeholder="Min"></td>
+                            <td><input type="text" name="max" style="height: 12px" placeholder="Max"></td>
+                        </tr>
+                    </table>
+
                     <button id="saveCode">Save</button>
                     <button id="runCode">Run R-Code</button>
+                    <button id="lameTest">Test</button>
                 </div>
                 <div ng-show="treeview" id="treebox" style="width: 100%; height:85%;"></div>
                 <textarea id="uniqueKey" ng-hide="true">{{vm.project.uniqueKey}}</textarea>
@@ -68,11 +94,21 @@
                 <p>Download The Whole Project</p>
                 <button ng-click="download(vm.project.uniqueKey)">Download</button>
             </div>
-                <div style="height: 100%" class="col-xs-9">
-                    <leaflet lf-draw="vm.drawOptions" lf-center="vm.center" marker="vm.markers" layers="vm.layers" height="100%" width="100%"></leaflet>
-                </div>
+            <div id="mirror" style="height: 100%" class="col-md-8">
+                <leaflet lf-draw="vm.drawOptions" lf-center="vm.center" marker="vm.markers" layers="vm.layers" height="100%" width="100%"></leaflet>
+            </div>
         </div>
 </div>
+
+<script>
+    $(function() {
+        $( window ).resize(function() {
+            $( "#resizable" ).resizable({ disabled: false, maxWidth: $('.container-fluid').innerWidth()-200 });
+            $('#mirror').css('width', Math.floor($('.container-fluid').innerWidth() -  $( "#resizable" ).innerWidth()));
+        });
+
+    }); </script>
+
 <script src="../upload.js"></script>
 <script src="../runR.js"></script>
 <script src="../saveR.js"></script>
