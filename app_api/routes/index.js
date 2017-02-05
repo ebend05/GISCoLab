@@ -34,7 +34,7 @@ router.post('/runExistingCode/:key', ctrlProject.runExistingRCode);
 router.post('/saveRCode/:key', ctrlProject.saveRCode);
 router.post('/runRCode', auth, ctrlProject.runRCode);
 router.get('/loadTreedata/:key', ctrlProject.loadTreedata);
-router.get('/loadTreedata2/:key', ctrlProject.loadTreedata2);
+router.get('/loadTreedata2/:key/:string/:filename', ctrlProject.loadTreedata2);
 
 // authentication
 router.post('/register', ctrlAuth.register);

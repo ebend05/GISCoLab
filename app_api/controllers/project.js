@@ -338,8 +338,12 @@ module.exports.loadTreedata = function(req, res)
 module.exports.loadTreedata2 = function(req, res)
 {
     console.log(req.params.key);
-    var file = fs.readFile(path.join(__dirname, '../../projectData/' + req.params.key + req.params.path + req.params.name));
-    console.log("filepush");
-    console.log(file);
-    res.status(200).send(file);
+    console.log(req.params.string);
+    console.log(req.params.filename);
+    fs.readFile('projectData/' + req.params.key + "/" + req.params.string + "/" + req.params.filename, function (err, data) {
+        if (err) throw err;
+        console.log("filepush");
+        console.log(data);
+        res.status(200).send(data);
+    });
 }

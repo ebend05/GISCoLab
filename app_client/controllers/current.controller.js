@@ -180,34 +180,52 @@
             var item = tree.getItem(id);
             var path = item.path;
             var name = item.name;
-            var pathstring = "txtFiles";
-            console.log(pathstring);
+            var ending = item.extension;
+            if(ending == ".txt"){
+                var txtstring = "/txtFiles/";
+            }
+            else
+                if(ending == '.r'){
+                var txtstring = "/rScripts/";
+            }
+            console.log(txtstring);
             console.log(id);
             console.log(item);
             console.log(path);
-            $.ajax({
-                type: "GET",
-                url: "api/loadTreedata2/" + $rootScope.uniKey +  pathstring +  name,
-                success: function (data) {
-                    // $('#codearea').html(data);
-                    console.log(data);
-                }
-            })
+            console.log(ending);
+            if(ending !== undefined){
+                $.ajax({
+                    type: "GET",
+                    url: "api/loadTreedata2/" + $rootScope.uniKey +  txtstring + name,
+                    success: function (data) {
+                        if(ending == '.R'){
+                            $('#codearea').html(data);
+                            console.log(data);
+                        }else
+                            if(ending == '.txt'){
+                                $('#txtview').html(data);
+                                console.log(data);
+                            }
+                    }
+                })
+            }
         };
-
-
-        var treeview;
 
         $scope.buttonCodeToggle = function(){
             angular.element( document.querySelector('#code')).addClass('active');
             angular.element( document.querySelector('#otherdata')).removeClass('active');
-            treeview = false;
+            angular.element( document.querySelector('#txt')).removeClass('active');
         };
         $scope.buttonTreeToggle = function(){
             angular.element( document.querySelector('#code')).removeClass('active');
             angular.element( document.querySelector('#otherdata')).addClass('active');
-            treeview = true;
+            angular.element( document.querySelector('#txt')).removeClass('active');
         };
+        $scope.buttonTxtToggle = function(){
+            angular.element( document.querySelector('#code')).removeClass('active');
+            angular.element( document.querySelector('#otherdata')).removeClass('active');
+            angular.element( document.querySelector('#txt')).addClass('active');
+        }
 
     }
 })();
