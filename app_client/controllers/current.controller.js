@@ -4,11 +4,45 @@
         .module('giscolab')
         .controller('currentCtrl', currentCtrl);
     var proKey;
-    currentCtrl.$inject = ['$location', 'meanData', 'userService', '$scope', 'leafletDrawEvents', 'projectService'];
-    function currentCtrl($location, meanData, userService, $scope, leafletDrawEvents, projectService) {
+    currentCtrl.$inject = ['$location', 'meanData', 'userService', '$scope', 'leafletDrawEvents', 'projectService', '$rootScope'];
+    function currentCtrl($location, meanData, userService, $scope, leafletDrawEvents, projectService, $rootScope) {
         console.log("current Controller is running!!!");
 
        var vm = this;
+
+        vm.project = {};
+
+        var pid = projectService.getID();
+
+
+        if(pid !== undefined) {
+            meanData.getProject(pid)
+                .success(function (data) {
+                    vm.project = data;
+                    proKey = vm.project.uniqueKey;
+                    $rootScope.uniKey = proKey;
+                })
+                .error(function (e) {
+                    console.log(e);
+                });
+        } else {
+        alert("kein Projekt ausgewählt. Bitte erst eins auswählen!");
+    };
+
+        $(document).ready(function () {
+            $.ajax({
+                url: "api/loadTreedata/" + $rootScope.uniKey,
+                type: "Get",
+                success: function (data) {
+                    var old = JSON.stringify(data).replace(/children/g, "data"); //convert to JSON string
+                    var newjson = JSON.parse(old); //convert back to array
+                    console.log(newjson);
+                    $rootScope.newjson = newjson;
+                },
+                error: function (msg) { alert(msg); }
+            });
+        });
+
 
         /* start leaflet */
         var drawnItems = new L.FeatureGroup();
@@ -96,49 +130,6 @@
             });
         });
 
-        vm.project = {};
-
-        var pid = projectService.getID();
-
-        if(pid !== undefined) {
-            meanData.getProject(pid)
-                .success(function (data) {
-                    vm.project = data;
-                    proKey = vm.project.uniqueKey;
-                    //*****************************************************************************************************
-                    //*****************************************************************************************************
-                    //*****************************************************************************************************
-                    // Treeview
-
-                    var tree = new webix.ui({
-                        container:"treebox",
-                        view:"tree",
-                        select:"true",
-                        url: "../../projectData/" + proKey + "/datatxt.json",
-                        on: {"itemClick": function () {alert("item has just been clicked");}},
-                        template:"{common.icon()} {common.folder()}<span onclick='treeData();'>#value#<span>"
-                    });
-
-                    treeData = function(){
-                        var id = tree.getSelectedId();
-                        console.log(id);
-                        $.ajax({
-                            type: "GET",
-                            url: id,
-                            data: id,
-                            success: function (data) {
-                                $('#codearea').html(data);
-                            }
-                        })
-                    };
-                })
-                .error(function (e) {
-                    console.log(e);
-                });
-        } else {
-            alert("kein Projekt ausgewählt. Bitte erst eins auswählen!");
-        };
-
         $scope.download = function(key){
             projectService.downloadZip(key)
             .success(function(data, status, headers, config){
@@ -167,6 +158,43 @@
         //*****************************************************************************************************
         //*****************************************************************************************************
         //*****************************************************************************************************
+
+        //*****************************************************************************************************
+        //*****************************************************************************************************
+        //*****************************************************************************************************
+        // Treeview
+
+        console.log($rootScope.newjson);
+
+        var tree = new webix.ui({
+            container:"treebox",
+            view:"tree",
+            select:"true",
+            on: {"itemClick": function () {alert("item has just been clicked");}},
+            template:"{common.icon()} {common.folder()} <span onclick='treeData();'>#name#<span>",
+            data: $rootScope.newjson
+        });
+
+        treeData = function(){
+            var id = tree.getSelectedId();
+            var item = tree.getItem(id);
+            var path = item.path;
+            var name = item.name;
+            var pathstring = "txtFiles";
+            console.log(pathstring);
+            console.log(id);
+            console.log(item);
+            console.log(path);
+            $.ajax({
+                type: "GET",
+                url: "api/loadTreedata2/" + $rootScope.uniKey +  pathstring +  name,
+                success: function (data) {
+                    // $('#codearea').html(data);
+                    console.log(data);
+                }
+            })
+        };
+
 
         var treeview;
 
