@@ -236,7 +236,7 @@ module.exports.downloadZip = function(req, res){
 
 			res.status(200).download(zipPath);
 
-		},30);
+		},200);
 	});
 
     child.on('error', function(err) {
