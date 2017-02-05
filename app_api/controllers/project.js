@@ -6,6 +6,7 @@ var fs = require('fs');
 var formidable = require('formidable');
 var path = require('path');
 var archiver = require('archiver');
+var dirTree = require("directory-tree");
 
 //var _ = require( 'lodash' );
 
@@ -99,62 +100,9 @@ module.exports.createProject = function(req, res){
         exec("cd projectData/"+projDirName+" && mkdir rScripts", puts);
         exec("cd projectData/"+projDirName+" && mkdir txtFiles", puts);
         exec("cd projectData/"+projDirName+" && mkdir geoTiffs", puts);
-        exec("cd projectData/"+projDirName+" && echo {} > datatxt.json", puts);
-        exec("cd projectData/"+projDirName+" && echo {} > datarScripts.json", puts);
-        project.filePath.push("projectData", "projectData/"+req.body.uniqueKey, "projectData/"+req.body.uniqueKey+"/rScripts", "projectData/"+req.body.uniqueKey+"/txtFiles", "projectData/"+req.body.uniqueKey+"/geoTiffs", "projectData/"+req.body.uniqueKey+"/datatxt.json", "projectData/"+req.body.uniqueKey+"/datarScript.json");
+        project.filePath.push("projectData", "projectData/"+req.body.uniqueKey, "projectData/"+req.body.uniqueKey+"/rScripts", "projectData/"+req.body.uniqueKey+"/txtFiles", "projectData/"+req.body.uniqueKey+"/geoTiffs");
 
     }, 40);
-
-    setTimeout(function () {
-		console.log("read datatxt.json");
-        fs.readFile('projectData/' + projDirName + '/datatxt.json', function (err, data) {
-            if (err) throw err;
-            var newData = JSON.parse(data);
-            newData.id = "../../projectData/" + projDirName + "/txtFiles/";
-            newData.value = "txtFiles";
-            newData.data = [];
-            console.log(newData);
-            newData = JSON.stringify(newData);
-            console.log(newData);
-
-            var fileName = path.join(__dirname, '../../projectData/' + projDirName + '/datatxt') + '.json';
-
-            fs.writeFile(fileName, newData, function(err) {
-                if (err) {
-                    console.error('Something when wrong when saving the temp file' + err);
-                    res.send('Something when wrong when saving the temp file');
-                }
-            });
-
-        });
-    }, 120);
-
-    setTimeout(function () {
-		console.log("read datarScripts.json");
-        fs.readFile('projectData/' + projDirName + '/datarScripts.json', function (err, data) {
-            if (err) throw err;
-            var newData = JSON.parse(data);
-            newData.id = "../../projectData/" + projDirName + "/rScripts/";
-            newData.value = "rScripts";
-            newData.data = [];
-            console.log(newData);
-            newData = JSON.stringify(newData);
-            console.log(newData);
-
-            var fileName = path.join(__dirname, '../../projectData/' + projDirName + '/datarScripts') + '.json';
-
-            fs.writeFile(fileName, newData, function(err) {
-                if (err) {
-                    console.error('Something when wrong when saving the temp file' + err);
-                    res.send('Something when wrong when saving the temp file');
-                }
-            });
-
-        });
-    }, 120);
-
-
-
 };
 
 module.exports.projectRead = function(req, res) {
@@ -242,42 +190,10 @@ module.exports.uploadFile = function(req, res) {
         if(file.type === 'text/plain'){
             fs.rename(file.path, path.join(form.uploadDir+'/'+projDirName+'/txtFiles', file.name));
 
-            fs.readFile('projectData/' + projDirName + '/datatxt.json', function (err, jsondata) {
-                if (err) throw err;
-                var newData = JSON.parse(jsondata);
-                newData.data.push({id: "../../projectData/" + projDirName + "/txtFiles/" + file.name , value: file.name});
-                newData = JSON.stringify(newData);
-                console.log(JSON.parse(newData))
-
-                var fileName = path.join(__dirname, '../../projectData/' + projDirName + '/datatxt') + '.json';
-
-                fs.writeFile(fileName, newData, function(err) {
-                    if (err) {
-                        console.error('Something when wrong when saving the temp file' + err);
-                        res.send('Something when wrong when saving the temp file');
-                    }
-                });
-
-            });
         } else
 		if(file.type === 'text/x-r-source'){
             fs.rename(file.path, path.join(form.uploadDir+'/'+projDirName+'/rScripts', file.name));
 
-            fs.readFile('projectData/' + projDirName + '/datarScripts.json', function (err, data) {
-                if (err) throw err;
-                var newData = JSON.parse(data);
-                newData.data.push({id: "../../projectData/" + projDirName + "/rScripts/" + file.name , value: file.name});
-                newData = JSON.stringify(newData);
-
-                var fileName = path.join(__dirname, '../../projectData/' + projDirName + '/datarScripts') + '.json';
-
-                fs.writeFile(fileName, newData, function (err) {
-                    if (err) {
-                        console.error('Something when wrong when saving the temp file' + err);
-                        res.send('Something when wrong when saving the temp file');
-                    }
-                });
-            });
         } else
 		{
 			alert("Bitte nur Dateien vom Typ .R oder .txt hochladen!");
@@ -405,6 +321,25 @@ module.exports.runRCode = function (req, res)
 			res.status(200).send("R File successfully saved!");
 		}, 50);
 	}, 50);
+};
 
+module.exports.loadTreedata = function(req, res)
+{
+    console.log("lalala");
+    console.log(req.params.key);
+    console.log("lalala");
+    var dT = dirTree(path.join(__dirname, '../../projectData/' + req.params.key));
+    setTimeout(function () {
+        console.log(dT);
+        res.status(200).json(dT);
+    }, 50);
 
 };
+module.exports.loadTreedata2 = function(req, res)
+{
+    console.log(req.params.key);
+    var file = fs.readFile(path.join(__dirname, '../../projectData/' + req.params.key + req.params.path + req.params.name));
+    console.log("filepush");
+    console.log(file);
+    res.status(200).send(file);
+}
