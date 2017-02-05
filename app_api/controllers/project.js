@@ -6,7 +6,6 @@ var fs = require('fs');
 var formidable = require('formidable');
 var path = require('path');
 var archiver = require('archiver');
-var dirTree = require("directory-tree");
 
 //var _ = require( 'lodash' );
 
@@ -100,31 +99,65 @@ module.exports.createProject = function(req, res){
         exec("cd projectData/"+projDirName+" && mkdir rScripts", puts);
         exec("cd projectData/"+projDirName+" && mkdir txtFiles", puts);
         exec("cd projectData/"+projDirName+" && mkdir geoTiffs", puts);
-        project.filePath.push("projectData", "projectData/"+req.body.uniqueKey, "projectData/"+req.body.uniqueKey+"/rScripts", "projectData/"+req.body.uniqueKey+"/txtFiles", "projectData/"+req.body.uniqueKey+"/geoTiffs");
+        exec("cd projectData/"+projDirName+" && echo {} > datatxt.json", puts);
+        exec("cd projectData/"+projDirName+" && echo {} > datarScripts.json", puts);
+        project.filePath.push("projectData", "projectData/"+req.body.uniqueKey, "projectData/"+req.body.uniqueKey+"/rScripts", "projectData/"+req.body.uniqueKey+"/txtFiles", "projectData/"+req.body.uniqueKey+"/geoTiffs", "projectData/"+req.body.uniqueKey+"/datatxt.json", "projectData/"+req.body.uniqueKey+"/datarScript.json");
 
     }, 40);
+
+    setTimeout(function () {
+		console.log("read datatxt.json");
+        fs.readFile('projectData/' + projDirName + '/datatxt.json', function (err, data) {
+            if (err) throw err;
+            var newData = JSON.parse(data);
+            newData.id = "../../projectData/" + projDirName + "/txtFiles/";
+            newData.value = "txtFiles";
+            newData.data = [];
+            console.log(newData);
+            newData = JSON.stringify(newData);
+            console.log(newData);
+
+            var fileName = path.join(__dirname, '../../projectData/' + projDirName + '/datatxt') + '.json';
+
+            fs.writeFile(fileName, newData, function(err) {
+                if (err) {
+                    console.error('Something when wrong when saving the temp file' + err);
+                    res.send('Something when wrong when saving the temp file');
+                }
+            });
+
+        });
+    }, 120);
+
+    setTimeout(function () {
+		console.log("read datarScripts.json");
+        fs.readFile('projectData/' + projDirName + '/datarScripts.json', function (err, data) {
+            if (err) throw err;
+            var newData = JSON.parse(data);
+            newData.id = "../../projectData/" + projDirName + "/rScripts/";
+            newData.value = "rScripts";
+            newData.data = [];
+            console.log(newData);
+            newData = JSON.stringify(newData);
+            console.log(newData);
+
+            var fileName = path.join(__dirname, '../../projectData/' + projDirName + '/datarScripts') + '.json';
+
+            fs.writeFile(fileName, newData, function(err) {
+                if (err) {
+                    console.error('Something when wrong when saving the temp file' + err);
+                    res.send('Something when wrong when saving the temp file');
+                }
+            });
+
+        });
+    }, 120);
+
+
 
 };
 
 module.exports.projectRead = function(req, res) {
-
-    /* 
-     Important notice:
-     for triggering this function,
-     req must contain the Projects ID;
-
-     this means, the respective project._id must be provided as JSON to the function (or otherwise attribute of function call, in this case, change attribute formatting).
-     */
-    /*
-    Project
-        .findOne({'ownerID': req.payload._id}, function(err, obj){
-            if(err){
-                res.status(401).json("couldnt load the project");
-            }else{
-                res.status(200).json(obj);
-            }
-        });
-        */
 
     Project
         .findById(req.params.id, function(err, obj){
@@ -136,14 +169,6 @@ module.exports.projectRead = function(req, res) {
         });
 };
 
-// ***********
-// ** TODO: **
-// ***********
-
-// adapt dependencies and mechanics 
-// to project management requirements
-
-// create and handle edit logging
 
 module.exports.projectUpdate = function(req, res) {
 
@@ -157,41 +182,6 @@ module.exports.projectUpdate = function(req, res) {
                 res.status(200).json(obj);
             }
         });
-
-    /*
-     if (!req.payload._id) {
-     res.status(401).json({
-     "message": "UnauthorizedError: cannot update project without being logged in as a user"
-     });
-     } else {
-     // authorization needed, so not every user can change a project
-     // validate user as author or collaborator,
-     // otherwise shoot down request
-     Project.findById(req.body._id)
-     .exec(function (err, project) {
-     if (err) {
-     res.status(401).json({
-     "message": "dbError: Error performing FindById"
-     });
-     } else if ( req.payload._id === project.ownerID ) {
-     // Editor is owner
-     Project.findByIdAndUpdate(req.payload._id, req.body, {runValidators: true, upsert: true})
-     .exec(function (err, user) {
-     res.status(200).json(project);
-     })
-     } else if ( _.includes( project.collaborators, req.payload._id )) {
-     // Editor is collaborator
-     Project.findByIdAndUpdate(req.payload._id, req.body, {runValidators: true, upsert: true})
-     .exec(function (err, user) {
-     res.status(200).json(project);
-     })
-     } else {
-     res.status(401).json({
-     "message": "UnauthorizedError: Must be owner or collaborator to edit project"
-     })
-     }
-     });
-     }*/
 };
 
 
@@ -225,75 +215,13 @@ module.exports.projectDelete = function (req, res) {
                 var exec = require('child_process').exec;
                 function puts(error, stdout, stderr) { if(error){ console.log(error)}else{console.log(stdout)} };
 
-				/**
-				 * Geht kürzer!!
-				exec("cd projectData/"+obj.uniqueKey+" && rd geoTiffs", puts);
-                exec("cd projectData/"+obj.uniqueKey+" && rd txtFiles", puts);
-                exec("cd projectData/"+obj.uniqueKey+" && rd rScripts", puts);
-                exec("cd projectData && rd "+obj.uniqueKey+"", puts);
-				 * rm -r löscht rekursiv sämtliche Unterstrukturen eines Directory's, und dann den Ordner selbst!
-				 */
+
 				var projDirName = obj.uniqueKey.replace(/(\s)/g, "__");
 				exec("cd projectData && rm -r " +projDirName +"", puts);
 
 				obj.remove();
 				res.status(200).json("removed the project");
-                /*
-                User
-                    .findById(obj.ownerID, function (e, owner){
-                        if(e){
-                            console.log("something went wrong");
-                        }else {
-                            //owner.ownProjects.pull({projectName: obj.projectName, projectID: obj._id});
-                            //for(var j=0; j < owner.ownProjects.length; j++){
-                            //if (owner.ownProjects[j].projectID === obj._id) {
-                                //delete owner.ownProjects[{projectName: obj.projectName, projectID:obj._id}];
-                            //}
-                        //}
-                        }});
-*/
-
-                /*
-                var coll = obj.collaborators;
-                for(var i = 0; i < coll.length; i++){
-                    User.findOne({'email': coll[i]}, function (error, collabo) {
-                        if (error) {
-                            console.log("something went wrong");
-                        } else {
-                            //collabo.coopProjects.pull({projectName: obj.projectName, projectID: obj._id});
-                            //for(var m=0; m < collabo.coopProjects.length; m++){
-                            //if (collabo.coopProjects[m].projectID === obj._id) {
-                                //delete collabo.coopProjects[{projectName: obj.projectName, projectID:obj._id}];
-                            //}}
-                        }
-                    });
-            }
-            */
         }});
-
-    /*
-     if (!req.payload._id) {
-     res.status(401).json({
-     "message": "UnauthorizedError: cannot delete profile without being logged in to it"
-     });
-     } else {
-     Project.findById(req.payload._id)
-     .exec(function (err, value) {
-     if (err) {
-     res.status(401).json({
-     "message": "DeleteError: could not delete feature"
-     });
-     } else if ( req.payload._id === project.ownerID ) {
-     console.log('feature removed (logging just for testing)');
-     value.remove();
-     res.status(200).send('removed Feature');
-     } else {
-     res.status(401).json({
-     "message": "UnauthorizedError: Must be owner to delete project"
-     });
-     }
-     });
-     }*/
 };
 
 module.exports.uploadFile = function(req, res) {
@@ -302,22 +230,59 @@ module.exports.uploadFile = function(req, res) {
 
     form.multiples = false;
 
-    // TODO: Abfrage ob Dateiendung r oder txt ist und dann Error werfen, damit kein Datenmüll hochgeladen wird
-
     form.uploadDir = path.join(__dirname, '../../projectData');
 
     console.log(path.join(__dirname, '../../projectData'));
 
 	var projDirName = req.params.key.replace(/(\s)/g, "__");
-// every time a file has been uploaded successfully,
-// rename it to it's original name
+
+	// every time a file has been uploaded successfully,
+	// rename it to it's original name
     form.on('file', function (field, file) {
         if(file.type === 'text/plain'){
             fs.rename(file.path, path.join(form.uploadDir+'/'+projDirName+'/txtFiles', file.name));
-        }
-        if(file.type === 'text/x-r-source'){
+
+            fs.readFile('projectData/' + projDirName + '/datatxt.json', function (err, jsondata) {
+                if (err) throw err;
+                var newData = JSON.parse(jsondata);
+                newData.data.push({id: "../../projectData/" + projDirName + "/txtFiles/" + file.name , value: file.name});
+                newData = JSON.stringify(newData);
+                console.log(JSON.parse(newData))
+
+                var fileName = path.join(__dirname, '../../projectData/' + projDirName + '/datatxt') + '.json';
+
+                fs.writeFile(fileName, newData, function(err) {
+                    if (err) {
+                        console.error('Something when wrong when saving the temp file' + err);
+                        res.send('Something when wrong when saving the temp file');
+                    }
+                });
+
+            });
+        } else
+		if(file.type === 'text/x-r-source'){
             fs.rename(file.path, path.join(form.uploadDir+'/'+projDirName+'/rScripts', file.name));
-        }
+
+            fs.readFile('projectData/' + projDirName + '/datarScripts.json', function (err, data) {
+                if (err) throw err;
+                var newData = JSON.parse(data);
+                newData.data.push({id: "../../projectData/" + projDirName + "/rScripts/" + file.name , value: file.name});
+                newData = JSON.stringify(newData);
+
+                var fileName = path.join(__dirname, '../../projectData/' + projDirName + '/datarScripts') + '.json';
+
+                fs.writeFile(fileName, newData, function (err) {
+                    if (err) {
+                        console.error('Something when wrong when saving the temp file' + err);
+                        res.send('Something when wrong when saving the temp file');
+                    }
+                });
+            });
+        } else
+		{
+			alert("Bitte nur Dateien vom Typ .R oder .txt hochladen!");
+			res.send('Bitte nur Dateien vom Typ .R oder .txt hochladen.');
+		}
     });
 
 // log any errors that occur
@@ -387,44 +352,28 @@ module.exports.saveRCode = function (req, res)
 	res.status(200).send("R File successfully saved!");
 };
 
+module.exports.runExistingRCode = function(req, res){
+	var projDirName = req.params.key.replace(/(\s)/g, "__");
+	var pathToScript = path.join(__dirname, "../../projectData/" + projDirName + "/rScripts/getCSVwithSciDBData.R");
+
+	var exec = require('child_process').exec;
+	function puts(error, stdout, stderr) { if(error){ console.log(error)}else{console.log(stdout)} };
+	var child = exec("Rscript " + pathToScript, puts);
+	child.on('close', function () {
+		res.status(200).send('hubba-bubba');
+	});
+};
+
 
 module.exports.runRCode = function (req, res)
 {
-<<<<<<< HEAD
-	console.log(req.body);
-	res.status(200).send("juuuuhuuuuuu");
-};
-
-module.exports.loadTreedata = function(req, res)
-{
-    console.log("lalala");
-    console.log(req.params.key);
-    console.log("lalala");
-    var dT = dirTree(path.join(__dirname, '../../projectData/' + req.params.key));
-    setTimeout(function () {
-        console.log(dT);
-        res.status(200).json(dT);
-    }, 50);
-
-};
-module.exports.loadTreedata2 = function(req, res)
-{
-    console.log(req.params.key);
-    var file = fs.readFile(path.join(__dirname, '../../projectData/' + req.params.key + req.params.path + req.params.name));
-    console.log("filepush");
-    console.log(file);
-    res.status(200).send(file);
-}
-=======
-	console.log("wuuhuuu, got this far!");
 	var projDirName = req.payload._id;
 	var fName = req.body.fName;
 	var pkg = req.body.pkg;
 	var code = req.body.code;
 
-	console.log("vor mkdir");
 	var exec = require('child_process').exec;
-	exec("mkdir "+ projDirName +"");
+	exec("mkdir userTemps/" + projDirName +"");
 
 	var date = Date.now();
 
@@ -444,14 +393,18 @@ module.exports.loadTreedata2 = function(req, res)
 		"firstimage = slice(x = scidbst(\"SENTINEL2_MS\"), \"t\", 0) # extrahiere erstes Bild \n" +
 		"as_PNG_layer(firstimage,TMS = TRUE, bands = 4, layername=\"S2_NIR_T0\", min=300, max=5000, rm.scidb = TRUE)";
 
-	fs.writeFile(fileName, fillR, function(err) {
-		if (err) {
-			console.log("Something went wrong when saving the RScript file: " + err);
-			res.send('Something went wrong when saving the RScript file!');
-		}
-	});
+	setTimeout( function () {
+		fs.writeFile(fileName, fillR, function(err) {
+			if (err) {
+				console.log("Something went wrong when saving the RScript file: " + err);
+				res.send('Something went wrong when saving the RScript file!');
+			}
+		});
+
+		setTimeout( function () {
+			res.status(200).send("R File successfully saved!");
+		}, 50);
+	}, 50);
 
 
-	res.status(200).send("R File successfully saved!");
 };
->>>>>>> origin/prototype

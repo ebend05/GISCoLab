@@ -18,19 +18,42 @@ function runR ()
 		pkg: pkg,
 		code: code
 	};
+	console.log(data);
 
 	$.ajax({
 		type: "POST",
 		data: data,
-		url: '/api/runRCode/',
+		headers: {
+			Authorization: 'Bearer ' + localStorage['mean-token']
+		},
+		url: "/api/runRCode",
 		timeout: 10000,
 		success: function(data, textStatus){
 			console.log("successfully saved : " + textStatus);
-			console.log(data);
+			//console.log(data);
 			//TODO: Trigger Data Tree Update
 		},
 		error: function(xhr, textStatus, errorThrown){
 			console.log("saving failed");
+		}
+	})
+}
+
+$('#lameTest').on('click', function () {
+	runExistingScript();
+});
+
+function runExistingScript() {
+	var uniqueKey = document.getElementById('uniqueKey').value;
+	$.ajax({
+		type: "POST",
+		url: '/api/runExistingCode/' + uniqueKey,
+		timeout: 100000,
+		success: function () {
+			console.log("yay");
+		},
+		error: function () {
+			console.log("dangit! :(");
 		}
 	})
 }
