@@ -33,7 +33,7 @@
 
 <div class="container-fluid jumbotroncurrent" style="height: 100%">
         <div style="height: 100%" class="row">
-            <div id="resizable" class="col-md-4" style="height: 100%">
+            <div id="resize" class="col-md-4" style="height: 100%">
                 <nav class="navbar navbar-custom navbar-static-top">
                     <div class="container">
                         <div id="navbarshort1" class="navbar-collapse collapse">
@@ -103,7 +103,7 @@
 <script>
     $(function() {
         $( window ).resize(function() {
-            $( "#resizable" ).resizable({ disabled: false, maxWidth: $('.container-fluid').innerWidth()-200 });
+            $( "#resize" ).resizable({ disabled: false, maxWidth: $('.container-fluid').innerWidth()-200 });
             $('#mirror').css('width', Math.floor($('.container-fluid').innerWidth() -  $( "#resizable" ).innerWidth()));
         });
 
