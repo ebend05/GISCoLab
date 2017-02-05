@@ -3,7 +3,6 @@
     angular
         .module('giscolab')
         .controller('currentCtrl', currentCtrl);
-    var proKey;
     currentCtrl.$inject = ['$location', 'meanData', 'userService', '$scope', 'leafletDrawEvents', 'projectService', '$rootScope'];
     function currentCtrl($location, meanData, userService, $scope, leafletDrawEvents, projectService, $rootScope) {
         console.log("current Controller is running!!!");
@@ -14,12 +13,11 @@
 
         var pid = projectService.getID();
 
-
         if(pid !== undefined) {
             meanData.getProject(pid)
                 .success(function (data) {
                     vm.project = data;
-                    proKey = vm.project.uniqueKey;
+                    var proKey = vm.project.uniqueKey;
                     $rootScope.uniKey = proKey;
                     loadnewjson();
                 })
@@ -28,7 +26,7 @@
                 });
         } else {
         alert("kein Projekt ausgewählt. Bitte erst eins auswählen!");
-    };
+        };
 
         var loadnewjson = function () {
             $.ajax({
@@ -38,12 +36,12 @@
                     var old = JSON.stringify(data).replace(/children/g, "data"); //convert to JSON string
                     var newjson = JSON.parse(old); //convert back to array
                     console.log(newjson);
+
                     $rootScope.newjson = newjson;
                 },
                 error: function (msg) { alert(msg); }
             });
         };
-
 
         /* start leaflet */
         var drawnItems = new L.FeatureGroup();
@@ -148,35 +146,23 @@
                 });
         };
 
-
-
-        //'node' variable will contain an object of the related tree node
-        //var node = tree.getItem('branch1');
-
-        //you can access data members directly
-        //var value = node.value; // ->"The Shawshank Redemption"
-
-        //*****************************************************************************************************
-        //*****************************************************************************************************
-        //*****************************************************************************************************
-
-        //*****************************************************************************************************
-        //*****************************************************************************************************
-        //*****************************************************************************************************
         // Treeview
 
-        console.log($rootScope.uniKey);
-        console.log($rootScope.newjson);
+        setTimeout(function () {
+            console.log($rootScope.uniKey);
+            console.log($rootScope.newjson);
+        }, 500);
+
 
         var tree = new webix.ui({
             container:"treebox",
+            id: "myTree",
             view:"tree",
             select:"true",
             on: {"itemClick": function () {alert("item has just been clicked");}},
             template:"{common.icon()} {common.folder()} <span onclick='treeData();'>#name#<span>",
             data: $rootScope.newjson
         });
-
 
         treeData = function(){
             var id = tree.getSelectedId();
@@ -201,7 +187,7 @@
                     type: "GET",
                     url: "api/loadTreedata2/" + $rootScope.uniKey +  txtstring + name,
                     success: function (data) {
-                        if(ending == '.R'){
+                        if(ending == '.r'){
                             $('#codearea').html(data);
                             console.log(data);
                         }else
