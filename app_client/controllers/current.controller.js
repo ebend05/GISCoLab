@@ -129,21 +129,8 @@
             });
         });
 
-        $scope.download = function(key){
-            projectService.downloadZip(key)
-            .success(function(data, status, headers, config){
-                var anchor = angular.element('<a/>');
-                console.log(data);
-                anchor.attr({
-                    href: 'data:' + encodeURI(data),
-                    target: '_blank',
-                    download: key+'.zip'
-                })[0].click();
-            })
-                .error(function(data, status, headers, config){
-                    console.log("something");
-                    alert("Download failed! \n Sorry about that.")
-                });
+        $$scope.download = function(key){
+            window.open('/api/download/'+key);
         };
 
         // Treeview

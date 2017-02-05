@@ -220,32 +220,36 @@ module.exports.downloadZip = function(req, res){
 	var exec = require('child_process').exec;
 	function puts(error, stdout, stderr) { if(error){ console.log(error)}else{console.log(stdout)} };
 
-	var output = fs.createWriteStream('projectData/'+req.params.key+'.zip');
+	var uniKey = req.params.key.replace(/(\s)/g, "__");
 
-    var archive = archiver('zip', {
-        store: false // Sets the compression method to STORE.
-    });
+	exec('cd projectData/ && rm '+uniKey+'.zip', puts);
 
-    archive.directory('projectData/'+req.params.key+'/');
+	var child = exec('cd projectData/ && zip -r '+uniKey+'.zip '+uniKey+'/*', puts);
 
-    archive.on('close', function() {
-        console.log(archive.pointer() + ' total bytes');
-        console.log('archiver has been finalized and the output file descriptor has closed.');
+	var zipPath = 'projectData/'+uniKey+'.zip';
 
-        exec('cd projectData && chmod 777 '+req.params.key+'.zip', puts);
-        res.status(200).sendfile('projectData/'+req.params.key+'.zip');
-    });
+	console.log(zipPath);
 
-    archive.on('error', function(err) {
+    child.on('close', function() {
+		setTimeout(function () {
+			console.log('archiver has been finalized and the output file descriptor has closed.');
+
+			res.status(200).download(zipPath);
+
+		},30);
+	});
+
+    child.on('error', function(err) {
         if(err) {
             res.status(400).json("could not zip the file");
         }
     });
-    archive.finalize();
+    child.finalize();
 
-    setTimeout( function(){
-        exec("cd projectData && del "+req.params.key+".zip", puts);
+    /*setTimeout( function(){
+        exec("rm -r " +zipPath);
     }, 100);
+    */
 };
 
 

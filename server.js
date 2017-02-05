@@ -106,4 +106,10 @@ var clearTemps = schedule.scheduleJob('0 0 3 0 0-6', function () {
     console.log(Date.now() +": cleared userTemps");
 });
 
+// get list of sciDB data every 6 hours every day
+var getSciDBData = schedule.scheduleJob('0 0 3,9,15,19,21 0 0-6', function () {
+    exec("RScript getCSVwithSciDBData.R");
+    console.log("requesting current data stock available in SciDB");
+})
+
 module.exports = app;
