@@ -21,6 +21,7 @@
                     vm.project = data;
                     proKey = vm.project.uniqueKey;
                     $rootScope.uniKey = proKey;
+                    loadnewjson();
                 })
                 .error(function (e) {
                     console.log(e);
@@ -29,7 +30,7 @@
         alert("kein Projekt ausgewählt. Bitte erst eins auswählen!");
     };
 
-        $(document).ready(function () {
+        var loadnewjson = function () {
             $.ajax({
                 url: "api/loadTreedata/" + $rootScope.uniKey,
                 type: "Get",
@@ -41,7 +42,7 @@
                 },
                 error: function (msg) { alert(msg); }
             });
-        });
+        };
 
 
         /* start leaflet */
@@ -164,6 +165,7 @@
         //*****************************************************************************************************
         // Treeview
 
+        console.log($rootScope.uniKey);
         console.log($rootScope.newjson);
 
         var tree = new webix.ui({
@@ -174,6 +176,7 @@
             template:"{common.icon()} {common.folder()} <span onclick='treeData();'>#name#<span>",
             data: $rootScope.newjson
         });
+
 
         treeData = function(){
             var id = tree.getSelectedId();
