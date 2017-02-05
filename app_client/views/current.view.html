@@ -101,11 +101,11 @@
 
 <script>
     $(function() {
-        $( window ).resize(function() {
-            $( "#resize" ).resizable({ disabled: false, maxWidth: $('.container-fluid').innerWidth()-200 });
-            $('#mirror').css('width', Math.floor($('.container-fluid').innerWidth() -  $( "#resizable" ).innerWidth()));
-        });
-
+        $('#resize').resizable({ maxWidth: $('.container-fluid').width()-200 , minWidth: 333});
+        $('#resize').on( 'resize',
+                function (event, ui) {
+                    $('#mirror').css('width', $('.container-fluid').width() - $( "#resize" ).width() );
+                });
     }); </script>
 
 <script src="../upload.js"></script>
