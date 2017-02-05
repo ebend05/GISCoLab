@@ -52,32 +52,29 @@
                         </div><!--/.nav-collapse -->
                     </div>
                 </nav>
-                <div ng-hide="codeview" style="height: 85%; width: 100%; overflow: auto;">
-                    <textarea id="fileName" style="height: 7%; width: 100%" placeholder="File Name"></textarea>
-                    <textarea id="packages" style="height: 10%; width: 100%" placeholder="Install packages here"></textarea>
-                    <textarea id="codearea" style="height: 68%; width: 100%" placeholder="Your R Code here"></textarea>
+                <div ng-hide="treeview" style="height: 85%; width: 100%; overflow: auto;">
+                    <textarea id="fileName" style="height: 7%; width: 100%; resize: none" placeholder="File Name"></textarea>
+                    <textarea id="packages" style="height: 10%; width: 100%; resize: none" placeholder="Install packages here"></textarea>
+                    <textarea id="codearea" style="height: 68%; width: 100%; resize: none" placeholder="Your R Code here"></textarea>
 
                     <input type="button" value="Add Row" onclick="addRow('dataTable')" />
-                    <input type="button" value="Delete Row" onclick="deleteRow('dataTable')" />
                     <p style="font-size: 12px;">Data from this table is only required to RUN code, it will not be saved! <br>
                         Checkbox is only used for row deletion. All rows will be passed to Code Runner. <br>
                         If only one value of a row is missing, the row will be ignored!</p>
                     <table id="dataTable" class="table table-bordered" width="100%" border="1">
                         <thead>
-                            <th style="height: 12px; width: 10%"></th>
-                            <th style="height: 12px; width: 30%">Output of your code</th>
-                            <th style="height: 12px; width: 10%">Spectr. Band</th>
-                            <th style="height: 12px; width: 30%">New layer name</th>
-                            <th style="height: 12px; width: 10%">Min</th>
-                            <th style="height: 12px; width: 10%">Max</th>
+                        <th style="height: 12px; width: 30%">Output of your code</th>
+                        <th style="height: 12px; width: 10%">Spectr. Band</th>
+                        <th style="height: 12px; width: 30%">New layer name</th>
+                        <th style="height: 12px; width: 10%">Min</th>
+                        <th style="height: 12px; width: 10%">Max</th>
                         </thead>
                         <tr>
-                            <td><input type="checkbox" style="height: 12px" name="chk"/></td>
-                            <td><input type="text" name="outputName" style="height: 12px" placeholder="Exact name of your sciDB-output"/></td>
-                            <td><input type="text" name="bands" style="height: 12px" placeholder="Spectr. band num."></td>
-                            <td><input type="text" name="layername" style="height: 12px" placeholder="Name of your new Layer"></td>
-                            <td><input type="text" name="min" style="height: 12px" placeholder="Min"></td>
-                            <td><input type="text" name="max" style="height: 12px" placeholder="Max"></td>
+                            <td><input type="text" name="outputName" placeholder="As specified in your code"/></td>
+                            <td><input type="text" name="bands"  placeholder="Spectr. band num."></td>
+                            <td><input type="text" name="layername" placeholder="Name of your new Layer"></td>
+                            <td><input type="text" name="min" placeholder="Min"></td>
+                            <td><input type="text" name="max"  placeholder="Max"></td>
                         </tr>
                     </table>
 

@@ -5,6 +5,18 @@ $('#runCode').on('click', function () {
 	runR();
 });
 
+function addRow() {
+	$('#dataTable').append(
+		'<tr>'+
+			'<td><input type="text" name="outputName" placeholder="As specified in your code"/></td>' +
+			'<td><input type="text" name="bands"  placeholder="Spectr. band num."></td>' +
+			'<td><input type="text" name="layername" placeholder="Name of your new Layer"></td>' +
+			'<td><input type="text" name="min" placeholder="Min"></td>' +
+			'<td><input type="text" name="max"  placeholder="Max"></td>' +
+		'</tr>'
+	)
+}
+
 function runR ()
 {
 	var uniqueKey = document.getElementById('uniqueKey').value;
