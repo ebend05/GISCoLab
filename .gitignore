@@ -10,9 +10,12 @@ npm-debug.log
 #bower
 app_client/bower_components
 
-#data
+#Mongo data (on Windows)
 data/
 
 #ProjektDaten
 projectData/
 userTemps/
+
+#sciDB data list (csv)
+datasets.csv
