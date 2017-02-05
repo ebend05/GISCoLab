@@ -136,7 +136,7 @@
                 var anchor = angular.element('<a/>');
                 console.log(data);
                 anchor.attr({
-                    href: 'data:attachment' + encodeURI(data),
+                    href: 'data:' + encodeURI(data),
                     target: '_blank',
                     download: key+'.zip'
                 })[0].click();

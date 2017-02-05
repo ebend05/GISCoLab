@@ -7,23 +7,23 @@ $('#runCode').on('click', function () {
 
 function runR ()
 {
-	var uniqueKey = document.getElementById('uniqueKey').value;
+	//var uniqueKey = document.getElementById('uniqueKey').value;
 
 	var fName = document.getElementById('fileName').value;
 	var pkg = document.getElementById('packages').value;
 	var code = document.getElementById('codearea').value;
 
-	data = {
+	var data = {
 		fName: fName,
 		pkg: pkg,
 		code: code
 	};
 
 	$.ajax({
-		type: "GET",
+		type: "POST",
 		data: data,
-		url: '/api/runRCode',
-		timeout: 5000,
+		url: '/api/runRCode/',
+		timeout: 10000,
 		success: function(data, textStatus){
 			console.log("successfully saved : " + textStatus);
 			console.log(data);
