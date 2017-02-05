@@ -13,7 +13,7 @@ function saveR()
 	var fName = document.getElementById('fileName').value;
 	var code = document.getElementById('codearea').value;
 
-	data = {
+	var data = {
 		fName: fName,
 		code: code
 	};
@@ -22,7 +22,7 @@ function saveR()
 		type: "POST",
 		data: data,
 		url: '/api/saveRCode/'+uniqueKey,
-		timeout: 5000,
+		timeout: 10000,
 		success: function(data, textStatus){
 			console.log("saved R code to RScript file : " + textStatus);
 			//TODO: Trigger Data Tree Update
