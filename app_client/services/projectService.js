@@ -35,8 +35,7 @@
             updateProject : updateProject,
             deleteProject : deleteProject,
             setID : setID,
-            getID : getID,
-            downloadZip: downloadZip
+            getID : getID
         };
 
     }

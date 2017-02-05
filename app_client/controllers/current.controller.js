@@ -129,7 +129,7 @@
             });
         });
 
-        $$scope.download = function(key){
+        $scope.download = function(key){
             window.open('/api/download/'+key);
         };
 
