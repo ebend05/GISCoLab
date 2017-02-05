@@ -268,6 +268,25 @@ module.exports.saveRCode = function (req, res)
 	res.status(200).send("R File successfully saved!");
 };
 
+module.exports.saveNote = function (req, res)
+{
+	var projDirName = req.params.key.replace(/(\s)/g, "__");
+	var note = req.body.note;
+	var fName = req.body.fName;
+	var fileName = path.join(__dirname, '../../projectData/'
+			+ projDirName + '/txtFiles/'
+			+ fName +'') + '.txt';
+
+	fs.writeFile(fileName, note, function(err) {
+		if (err) {
+			console.log("Something went wrong when saving the txt file: " + err);
+			res.send('Something went wrong when saving the txt file!');
+		}
+	});
+
+	res.status(200).send("Note successfully saved!");
+};
+
 module.exports.runExistingRCode = function(req, res){
 	var projDirName = req.params.key.replace(/(\s)/g, "__");
 	var pathToScript = path.join(__dirname, "../../projectData/" + projDirName + "/rScripts/getCSVwithSciDBData.R");

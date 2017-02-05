@@ -32,6 +32,7 @@ router.get('/download/:key', ctrlProject.downloadZip);
 router.post('/runExistingCode/:key', ctrlProject.runExistingRCode);
 
 router.post('/saveRCode/:key', ctrlProject.saveRCode);
+router.post('/saveNote/:key', ctrlProject.saveNote);
 router.post('/runRCode', auth, ctrlProject.runRCode);
 router.get('/loadTreedata/:key', ctrlProject.loadTreedata);
 router.get('/loadTreedata2/:key/:string/:filename', ctrlProject.loadTreedata2);

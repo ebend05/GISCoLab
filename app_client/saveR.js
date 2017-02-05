@@ -34,3 +34,34 @@ function saveR()
 	})
 
 }
+
+$('#saveTXT').on('click', function () {
+	saveTxt();
+});
+
+function saveTxt()
+{
+	var uniKey = document.getElementById('uniqueKey').value;
+	var fName = document.getElementById('noteFName').value;
+	var note = document.getElementById('txtview').value;
+
+	var data = {
+		fName: fName,
+		note: note
+	};
+
+	$.ajax({
+		type: "POST",
+		data: data,
+		url: '/api/saveNote/'+uniKey,
+		timeout: 10000,
+		success: function(data, textStatus){
+			console.log("saved note to txtFiles : " + textStatus);
+			//TODO: Trigger Data Tree Update
+		},
+		error: function(xhr, textStatus, errorThrown){
+			console.log("saving failed");
+			console.log(errorThrown);
+		}
+	})
+}
